@@ -1,15 +1,15 @@
 import React from "react";
-import { Button } from "@mui/material";
-import MainContainer from "./components/main/MainContainer";
+import MainContainer from "./components/MainContainer";
 import ApplicationProvider from "./contexts/ApplicationProvider";
 import KeycloakProvider from "./contexts/KeycloakProvider";
+import Routing from "@common/Routing";
 
 export default function App() {
   return (
     <KeycloakProvider>
       <ApplicationProvider>
         <MainContainer>
-          <Button>Hello</Button>
+          <Routing />
         </MainContainer>
       </ApplicationProvider>
     </KeycloakProvider>

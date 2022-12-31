@@ -7,10 +7,18 @@ const Dotenv = require("dotenv-webpack");
 module.exports = (env) => {
   return {
     output: {
-      publicPath: "http://localhost:3001/",
-      clean: true,
+      path: path.join(__dirname, "dist"),
+      filename: "bundle.js",
     },
     resolve: {
+      alias: {
+        "@components": path.join(__dirname, "src/components"),
+        "@pages": path.join(__dirname, "src/pages"),
+        "@hooks": path.join(__dirname, "src/hooks"),
+        "@contexts": path.join(__dirname, "src/contexts"),
+        "@common": path.join(__dirname, "src/common"),
+        "@utils": path.join(__dirname, "src/utils"),
+      },
       extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
     },
     devServer: {
@@ -23,9 +31,6 @@ module.exports = (env) => {
         {
           test: /\.m?js/,
           type: "javascript/auto",
-          resolve: {
-            fullySpecified: false,
-          },
         },
         {
           test: /\.(css|s[ac]ss)$/i,
@@ -59,4 +64,3 @@ module.exports = (env) => {
     ],
   };
 };
-  

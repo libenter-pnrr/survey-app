@@ -30,7 +30,9 @@
     "@tanstack/react-query": "^4.20.4",
     "keycloak-js": "^20.0.2",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-jsonschema-form-material-ui": "^3.0.0-rc.10",
     "react-router-dom": "^6.6.1"
   },
   "devDependencies": {

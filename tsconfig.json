@@ -2,7 +2,27 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@components/*": [
+        "./components/*"
+      ],
+      "@pages/*": [
+        "./pages/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@contexts/*": [
+        "./contexts/*"
+      ],
+      "@common/*": [
+        "./common/*"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ]
+    }
   },
   "include": [
     "./**/*.ts",
