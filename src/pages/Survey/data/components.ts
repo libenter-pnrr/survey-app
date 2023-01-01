@@ -1,8 +1,10 @@
 import { Notes, RadioButtonChecked, TextFields } from "@mui/icons-material";
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { v4 as uuid } from "uuid";
 
 export type FormElementProps = {
+  id: string;
   title: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
@@ -13,6 +15,7 @@ export type FormElementProps = {
 
 export const formElements: FormElementProps[] = [
   {
+    id: uuid(),
     title: "Text Input",
     icon: TextFields,
     schema: {
@@ -21,6 +24,7 @@ export const formElements: FormElementProps[] = [
     },
   },
   {
+    id: uuid(),
     title: "Text Area",
     icon: Notes,
     schema: {
@@ -32,6 +36,7 @@ export const formElements: FormElementProps[] = [
     },
   },
   {
+    id: uuid(),
     title: "Radio Select",
     icon: RadioButtonChecked,
     schema: {
