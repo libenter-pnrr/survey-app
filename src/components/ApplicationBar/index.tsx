@@ -14,7 +14,7 @@ import { Box, Container } from "@mui/system";
 import AdbIcon from "@mui/icons-material/Adb";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useApplicationContext } from "@contexts/ApplicationProvider";
-import { getMenu } from "@utils/Menu";
+import { getMenu } from "@common/Menu";
 import { Link, useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 

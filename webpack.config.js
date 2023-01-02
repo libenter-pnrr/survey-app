@@ -43,6 +43,7 @@ module.exports = (env) => {
             loader: "babel-loader",
           },
         },
+        { test: /\.json$/, type: "json" },
         {
           test: /\.jpe?g$|\.gif$|\.png$|\.PNG$|\.svg$|\.woff(2)?$|\.ttf$|\.eot$/,
           loader: "file-loader",
