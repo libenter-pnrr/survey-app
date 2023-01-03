@@ -9,13 +9,12 @@ import {
   Menu,
   MenuItem,
   Theme,
-  Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
 import useSurveyContext from "../../contexts/SurveyContext";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { FormElementProps } from "./types";
+import { FormElementProps } from "pages/Survey/types";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import { Dehaze, MoreVert } from "@mui/icons-material";

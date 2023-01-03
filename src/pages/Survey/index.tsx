@@ -3,12 +3,12 @@ import { Box } from "@mui/material";
 import { formElements } from "./data/components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { SET_QUESTIONS } from "./data/actions";
-import Sidebar from "./Sidebar";
+import Sidebar from "../../components/Survey/Sidebar";
 import useSurveyContext from "../../contexts/SurveyContext";
-import SurveyBuilder from "./SurveyBuilder";
+import SurveyBuilder from "@components/Survey/SurveyBuilder";
 import copy from "../../common/utils/copy";
 import reorder from "../../common/utils/reorder";
-import SurveyToolbar from "./SurveyToolbar";
+import SurveyToolbar from "../../components/Survey/SurveyToolbar";
 
 const Survey = () => {
   const { questions, display, dispatch } = useSurveyContext();
