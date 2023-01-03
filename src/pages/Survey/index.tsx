@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Toolbar, Typography, ButtonGroup, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { formElements } from "./data/components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { SET_QUESTIONS } from "./data/actions";
@@ -8,9 +8,10 @@ import useSurveyContext from "../../contexts/SurveyContext";
 import SurveyBuilder from "./SurveyBuilder";
 import copy from "../../common/utils/copy";
 import reorder from "../../common/utils/reorder";
+import SurveyToolbar from "./SurveyToolbar";
 
 const Survey = () => {
-  const { questions, dispatch } = useSurveyContext();
+  const { questions, display, dispatch } = useSurveyContext();
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -36,30 +37,16 @@ const Survey = () => {
   };
 
   return (
-    <div>
-      <Toolbar
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          px: [1],
-          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-        }}
-      >
-        <Typography variant="button">Crea Questionario</Typography>
-        <ButtonGroup variant="outlined" aria-label="outlined button group">
-          <Button>Costruisci</Button>
-          <Button>Anteprima</Button>
-        </ButtonGroup>
-        <Box />
-      </Toolbar>
+    <React.Fragment>
+      <SurveyToolbar />
       <Box sx={{ display: "flex", height: "calc(100vh - 133px)" }}>
         <DragDropContext onDragEnd={(e: DropResult) => onDragEnd(e)}>
           <Sidebar />
-          <SurveyBuilder />
+          {display === "builder" && <SurveyBuilder />}
+          {display === "preview" && <div>Preview</div>}
         </DragDropContext>
       </Box>
-    </div>
+    </React.Fragment>
   );
 };
 

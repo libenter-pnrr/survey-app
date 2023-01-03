@@ -8,12 +8,13 @@ import { ISurveyContext, SurveyContextProps } from "../pages/Survey/types";
 const SurveyContext = React.createContext<ISurveyContext>({
   title: "",
   description: "",
+  display: "builder",
   questions: [],
   dispatch: () => {},
 } as ISurveyContext);
 
 export const SurveyProvider = ({ children }: SurveyContextProps) => {
-  const [{ title, description, questions }, dispatch] = useReducer(
+  const [{ title, description, questions, display }, dispatch] = useReducer(
     SurveyReducer,
     surveyReducerInitialState
   );
@@ -25,6 +26,7 @@ export const SurveyProvider = ({ children }: SurveyContextProps) => {
         description,
         questions,
         dispatch,
+        display,
       }}
     >
       {children}

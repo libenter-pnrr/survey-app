@@ -4,17 +4,36 @@ import {
   Card,
   CardContent,
   Container,
+  IconButton,
   InputBase,
+  Menu,
+  MenuItem,
   Theme,
+  Toolbar,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import useSurveyContext from "../../contexts/SurveyContext";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { FormElementProps } from "./types";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
+import { Dehaze, MoreVert } from "@mui/icons-material";
 
 const SurveyBuilder = () => {
   const { questions, title, description, dispatch } = useSurveyContext();
+
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   return (
     <Box
@@ -26,7 +45,11 @@ const SurveyBuilder = () => {
     >
       <Container maxWidth="md">
         <Card>
-          <CardContent>
+          <CardContent
+            sx={{
+              padding: 4,
+            }}
+          >
             <InputBase
               value={title}
               onChange={(e) =>
@@ -51,6 +74,7 @@ const SurveyBuilder = () => {
               {(provided, snapshot) => (
                 <Box
                   sx={{
+                    marginTop: 2,
                     width: "100%",
                     minHeight: "100px",
                     backgroundColor: (theme: Theme) =>
@@ -70,10 +94,62 @@ const SurveyBuilder = () => {
                       >
                         {(provided, snapshot) => (
                           <Box
+                            sx={{
+                              marginBottom: 3,
+                            }}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
+                            <Box
+                              sx={{
+                                minHeight: 40,
+                                display: "flex",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Dehaze />
+
+                              <Box sx={{ flexGrow: 0 }}>
+                                <Tooltip title="Open settings">
+                                  <IconButton
+                                    onClick={handleOpenUserMenu}
+                                    sx={{ p: 0 }}
+                                  >
+                                    <MoreVert />
+                                  </IconButton>
+                                </Tooltip>
+                                <Menu
+                                  sx={{
+                                    minWidth: 200,
+                                  }}
+                                  id={`menu-${element.id}-appbar`}
+                                  anchorEl={anchorElUser}
+                                  anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  keepMounted
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  open={Boolean(anchorElUser)}
+                                  onClose={handleCloseUserMenu}
+                                >
+                                  <MenuItem
+                                    onClick={() => console.log("Update modal")}
+                                  >
+                                    <Typography>Modifica</Typography>
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={() => console.log("delete modal")}
+                                  >
+                                    <Typography>Elimina</Typography>
+                                  </MenuItem>
+                                </Menu>
+                              </Box>
+                            </Box>
                             <Form
                               validator={validator}
                               schema={element.schema}
@@ -86,6 +162,13 @@ const SurveyBuilder = () => {
                       </Draggable>
                     );
                   })}
+                  {questions.length === 0 && (
+                    <Box sx={{ textAlign: "center", padding: 2 }}>
+                      <Typography variant="body2">
+                        Trascina elementi qui
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               )}
             </Droppable>

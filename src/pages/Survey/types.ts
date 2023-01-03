@@ -14,6 +14,7 @@ export type FormElementProps = {
 export interface ISurveyReducerState {
   title: string;
   description: string;
+  display: string;
   questions: FormElementProps[];
 }
 
