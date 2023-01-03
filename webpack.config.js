@@ -18,6 +18,7 @@ module.exports = (env) => {
         "@contexts": path.join(__dirname, "src/contexts"),
         "@common": path.join(__dirname, "src/common"),
         "@utils": path.join(__dirname, "src/utils"),
+        "@reducers": path.join(__dirname, "src/reducers"),
       },
       extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
     },

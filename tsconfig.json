@@ -18,6 +18,9 @@
       ],
       "@common/*": [
         "./common/*"
+      ],
+      "@reducers/*": [
+        "./reducers/*"
       ]
     }
   },

@@ -4,20 +4,20 @@ import { FormElementProps } from "../types";
 export const formElements: FormElementProps[] = [
   {
     id: "1",
+    type: "text",
     title: "Text Input",
     icon: TextFields,
     schema: {
       type: "string",
-      title: "Text Input",
     },
   },
   {
     id: "2",
+    type: "textarea",
     title: "Text Area",
     icon: Notes,
     schema: {
       type: "string",
-      title: "Text Area",
     },
     uiSchema: {
       "ui:widget": "textarea",
@@ -25,12 +25,13 @@ export const formElements: FormElementProps[] = [
   },
   {
     id: "3",
+    type: "radio",
     title: "Radio Select",
     icon: RadioButtonChecked,
     schema: {
       type: "string",
-      title: "Radio Select",
-      enum: ["Option 1", "Option 2", "Option 3"],
+      enum: [1, 2, 3],
+      enumNames: ["one", "two", "three"],
     },
     uiSchema: {
       "ui:widget": "radio",

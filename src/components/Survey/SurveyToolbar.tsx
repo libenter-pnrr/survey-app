@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Toolbar, Typography, ButtonGroup, Button } from "@mui/material";
-import { SET_DISPLAY } from "../../pages/Survey/data/actions";
+import { SET_DISPLAY } from "../../reducers/Survey/actions";
 import useSurveyContext from "../../contexts/SurveyContext";
 
 const SurveyToolbar = () => {

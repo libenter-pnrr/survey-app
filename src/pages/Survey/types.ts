@@ -3,7 +3,9 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 export type FormElementProps = {
   id: string;
+  type: "text" | "textarea" | "radio";
   title: string;
+  required?: boolean;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
@@ -14,6 +16,8 @@ export type FormElementProps = {
 export interface ISurveyReducerState {
   title: string;
   description: string;
+  toDelete?: string;
+  toUpdate?: string;
   display: string;
   questions: FormElementProps[];
 }

@@ -13,11 +13,25 @@ import {
   Typography,
 } from "@mui/material";
 import useSurveyContext from "../../contexts/SurveyContext";
+import DeleteSurveyDialog from "@components/Survey/DeleteSurveyDialog";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { FormElementProps } from "pages/Survey/types";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import { Dehaze, MoreVert } from "@mui/icons-material";
+import {
+  FormItemBuilder,
+  FormItemBuilderToolbar,
+  MainContainer,
+  TextInputSubTitleBuilder,
+  TextInputTitleBuilder,
+} from "./SurveyBuilder.style";
+import {
+  SET_DESCRIPTION,
+  SET_TITLE,
+  SET_TO_DELETE,
+  SET_TO_UPDATE,
+} from "@reducers/Survey/actions";
 
 const SurveyBuilder = () => {
   const { questions, title, description, dispatch } = useSurveyContext();
@@ -34,147 +48,177 @@ const SurveyBuilder = () => {
     setAnchorElUser(null);
   };
 
+  const handleOpenDelete = (id) => {
+    handleCloseUserMenu();
+    dispatch({ type: SET_TO_DELETE, payload: id });
+  };
+
+  const handleOpenUpdate = (id) => {
+    handleCloseUserMenu();
+    dispatch({ type: SET_TO_UPDATE, payload: id });
+  };
+
   return (
-    <Box
-      sx={{
-        flex: "1 0 auto",
-        padding: 2,
-        backgroundColor: (theme) => theme.palette.grey[100],
-      }}
-    >
-      <Container maxWidth="md">
-        <Card>
-          <CardContent
+    <React.Fragment>
+      <DeleteSurveyDialog />
+
+      <Box sx={MainContainer}>
+        <Container maxWidth="md">
+          <Card
             sx={{
-              padding: 4,
+              minHeight: "calc(100vh - 163px)",
             }}
           >
-            <InputBase
-              value={title}
-              onChange={(e) =>
-                dispatch({ type: "SET_TITLE", payload: e.target.value })
-              }
-              sx={{ ml: 1, flex: 1, fontSize: 20, width: "100%" }}
-              placeholder="Titolo Questionario"
-            />
-            <InputBase
-              value={description}
-              onChange={(e) =>
-                dispatch({
-                  type: "SET_DESCRIPTION",
-                  payload: e.target.value,
-                })
-              }
-              sx={{ ml: 1, flex: 1, fontSize: 13, width: "100%" }}
-              placeholder="Sottotitolo Questionario"
-            />
+            <CardContent
+              sx={{
+                padding: 4,
+              }}
+            >
+              <InputBase
+                value={title}
+                onChange={(e) =>
+                  dispatch({ type: SET_TITLE, payload: e.target.value })
+                }
+                sx={TextInputTitleBuilder}
+                placeholder="Titolo Questionario"
+              />
+              <InputBase
+                value={description}
+                onChange={(e) =>
+                  dispatch({
+                    type: SET_DESCRIPTION,
+                    payload: e.target.value,
+                  })
+                }
+                sx={TextInputSubTitleBuilder}
+                placeholder="Sottotitolo Questionario"
+              />
 
-            <Droppable key={"FORM"} droppableId={"FORM"}>
-              {(provided, snapshot) => (
-                <Box
-                  sx={{
-                    marginTop: 2,
-                    width: "100%",
-                    minHeight: "100px",
-                    backgroundColor: (theme: Theme) =>
-                      questions.length !== 0
-                        ? theme.palette.common.white
-                        : theme.palette.grey[100],
-                  }}
-                  ref={provided.innerRef}
-                  // isDraggingOver={snapshot.isDraggingOver}
-                >
-                  {questions.map((element: FormElementProps, index: number) => {
-                    return (
-                      <Draggable
-                        key={element.id}
-                        draggableId={element.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <Box
-                            sx={{
-                              marginBottom: 3,
-                            }}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
+              <Droppable key={"FORM"} droppableId={"FORM"}>
+                {(provided, snapshot) => (
+                  <Box
+                    sx={{
+                      marginTop: 2,
+                      width: "100%",
+                      minHeight: "100px",
+                      backgroundColor: (theme: Theme) =>
+                        questions.length !== 0
+                          ? theme.palette.common.white
+                          : theme.palette.grey[100],
+                    }}
+                    ref={provided.innerRef}
+                    // isDraggingOver={snapshot.isDraggingOver}
+                  >
+                    {questions.map(
+                      (element: FormElementProps, index: number) => {
+                        return (
+                          <Draggable
+                            key={element.id}
+                            draggableId={element.id}
+                            index={index}
                           >
-                            <Box
-                              sx={{
-                                minHeight: 40,
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Dehaze />
-
-                              <Box sx={{ flexGrow: 0 }}>
-                                <Tooltip title="Open settings">
-                                  <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{ p: 0 }}
+                            {(provided, snapshot) => (
+                              <Box
+                                sx={FormItemBuilder}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <Box sx={FormItemBuilderToolbar}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      alignContent: "center",
+                                      flexGrow: 1,
+                                    }}
                                   >
-                                    <MoreVert />
-                                  </IconButton>
-                                </Tooltip>
-                                <Menu
-                                  sx={{
-                                    minWidth: 200,
-                                  }}
-                                  id={`menu-${element.id}-appbar`}
-                                  anchorEl={anchorElUser}
-                                  anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                  }}
-                                  keepMounted
-                                  transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                  }}
-                                  open={Boolean(anchorElUser)}
-                                  onClose={handleCloseUserMenu}
-                                >
-                                  <MenuItem
-                                    onClick={() => console.log("Update modal")}
+                                    <Box className="toolBarContent">
+                                      <Dehaze />
+                                    </Box>
+                                    <Box
+                                      sx={{
+                                        marginLeft: 2,
+                                      }}
+                                    >
+                                      <Typography variant="body2">
+                                        {element.title || "N.D."}
+                                        {element.required && <span> *</span>}
+                                      </Typography>
+                                    </Box>
+                                  </Box>
+                                  <Box
+                                    sx={{ flexGrow: 0 }}
+                                    className="toolBarContent"
                                   >
-                                    <Typography>Modifica</Typography>
-                                  </MenuItem>
-                                  <MenuItem
-                                    onClick={() => console.log("delete modal")}
-                                  >
-                                    <Typography>Elimina</Typography>
-                                  </MenuItem>
-                                </Menu>
+                                    <Tooltip title="Open settings">
+                                      <IconButton
+                                        onClick={handleOpenUserMenu}
+                                        sx={{ p: 0 }}
+                                      >
+                                        <MoreVert />
+                                      </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                      id={`menu-${element.id}-appbar`}
+                                      anchorEl={anchorElUser}
+                                      anchorOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                      }}
+                                      keepMounted
+                                      transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                      }}
+                                      open={Boolean(anchorElUser)}
+                                      onClose={handleCloseUserMenu}
+                                    >
+                                      <MenuItem
+                                        onClick={() =>
+                                          handleOpenUpdate(element.id)
+                                        }
+                                      >
+                                        <Typography>Modifica</Typography>
+                                      </MenuItem>
+                                      <MenuItem
+                                        onClick={() =>
+                                          handleOpenDelete(element.id)
+                                        }
+                                      >
+                                        <Typography>Elimina</Typography>
+                                      </MenuItem>
+                                    </Menu>
+                                  </Box>
+                                </Box>
+                                <Form
+                                  validator={validator}
+                                  schema={element.schema}
+                                  uiSchema={element.uiSchema}
+                                  children={true}
+                                  disabled={snapshot.isDragging}
+                                />
                               </Box>
-                            </Box>
-                            <Form
-                              validator={validator}
-                              schema={element.schema}
-                              uiSchema={element.uiSchema}
-                              children={true}
-                              disabled={snapshot.isDragging}
-                            />
-                          </Box>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {questions.length === 0 && (
-                    <Box sx={{ textAlign: "center", padding: 2 }}>
-                      <Typography variant="body2">
-                        Trascina elementi qui
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-              )}
-            </Droppable>
-          </CardContent>
-        </Card>
-      </Container>
-    </Box>
+                            )}
+                          </Draggable>
+                        );
+                      }
+                    )}
+                    {questions.length === 0 && (
+                      <Box sx={{ textAlign: "center", padding: 2 }}>
+                        <Typography variant="body2">
+                          Trascina elementi qui
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                )}
+              </Droppable>
+            </CardContent>
+          </Card>
+        </Container>
+      </Box>
+    </React.Fragment>
   );
 };
 
