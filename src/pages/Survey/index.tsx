@@ -9,7 +9,6 @@ import SurveyBuilder from "@components/Survey/SurveyBuilder";
 import copy from "../../common/utils/copy";
 import reorder from "../../common/utils/reorder";
 import SurveyToolbar from "@components/Survey/SurveyToolbar";
-import UpdateSurveyItemDialog from "@components/Survey/UpdateSurveyItemDialog";
 
 const Survey = () => {
   const { questions, display, dispatch } = useSurveyContext();
@@ -40,7 +39,6 @@ const Survey = () => {
   return (
     <React.Fragment>
       <SurveyToolbar />
-      <UpdateSurveyItemDialog />
       <Box
         sx={{
           display: "flex",

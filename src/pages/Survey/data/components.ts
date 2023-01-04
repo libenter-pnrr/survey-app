@@ -9,6 +9,7 @@ export const formElements: FormElementProps[] = [
     icon: TextFields,
     schema: {
       type: "string",
+      description: "Una descrizione del campo",
     },
   },
   {
@@ -18,6 +19,7 @@ export const formElements: FormElementProps[] = [
     icon: Notes,
     schema: {
       type: "string",
+      description: "Una descrizione del campo",
     },
     uiSchema: {
       "ui:widget": "textarea",
@@ -30,6 +32,7 @@ export const formElements: FormElementProps[] = [
     icon: RadioButtonChecked,
     schema: {
       type: "string",
+      description: "Una descrizione del campo",
       enum: [1, 2, 3],
       enumNames: ["one", "two", "three"],
     },

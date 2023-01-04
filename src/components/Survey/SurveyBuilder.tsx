@@ -6,8 +6,6 @@ import {
   Container,
   IconButton,
   InputBase,
-  Menu,
-  MenuItem,
   Theme,
   Tooltip,
   Typography,
@@ -18,7 +16,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { FormElementProps } from "pages/Survey/types";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import { Dehaze, MoreVert } from "@mui/icons-material";
+import { Dehaze, Delete, Edit } from "@mui/icons-material";
 import {
   FormItemBuilder,
   FormItemBuilderToolbar,
@@ -32,35 +30,24 @@ import {
   SET_TO_DELETE,
   SET_TO_UPDATE,
 } from "@reducers/Survey/actions";
+import UpdateSurveyItemDialog from "./UpdateSurveyItemDialog";
 
 const SurveyBuilder = () => {
   const { questions, title, description, dispatch } = useSurveyContext();
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   const handleOpenDelete = (id) => {
-    handleCloseUserMenu();
     dispatch({ type: SET_TO_DELETE, payload: id });
   };
 
   const handleOpenUpdate = (id) => {
-    handleCloseUserMenu();
     dispatch({ type: SET_TO_UPDATE, payload: id });
   };
 
+  console.log(questions);
   return (
     <React.Fragment>
       <DeleteSurveyDialog />
+      <UpdateSurveyItemDialog />
 
       <Box sx={MainContainer}>
         <Container maxWidth="md">
@@ -153,42 +140,22 @@ const SurveyBuilder = () => {
                                   >
                                     <Tooltip title="Open settings">
                                       <IconButton
-                                        onClick={handleOpenUserMenu}
-                                        sx={{ p: 0 }}
-                                      >
-                                        <MoreVert />
-                                      </IconButton>
-                                    </Tooltip>
-                                    <Menu
-                                      id={`menu-${element.id}-appbar`}
-                                      anchorEl={anchorElUser}
-                                      anchorOrigin={{
-                                        vertical: "top",
-                                        horizontal: "right",
-                                      }}
-                                      keepMounted
-                                      transformOrigin={{
-                                        vertical: "top",
-                                        horizontal: "right",
-                                      }}
-                                      open={Boolean(anchorElUser)}
-                                      onClose={handleCloseUserMenu}
-                                    >
-                                      <MenuItem
                                         onClick={() =>
                                           handleOpenUpdate(element.id)
                                         }
                                       >
-                                        <Typography>Modifica</Typography>
-                                      </MenuItem>
-                                      <MenuItem
+                                        <Edit />
+                                      </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Elimina">
+                                      <IconButton
                                         onClick={() =>
                                           handleOpenDelete(element.id)
                                         }
                                       >
-                                        <Typography>Elimina</Typography>
-                                      </MenuItem>
-                                    </Menu>
+                                        <Delete />
+                                      </IconButton>
+                                    </Tooltip>
                                   </Box>
                                 </Box>
                                 <Form
