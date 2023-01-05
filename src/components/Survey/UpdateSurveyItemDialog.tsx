@@ -15,7 +15,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import useSurveyContext from "@contexts/SurveyContext";
 import { SET_TO_UPDATE, UPDATE } from "@reducers/Survey/actions";
-import RadioFragment from "./Fragments/RadioFragment";
+import RadioCheckboxFragmentProps from "./Fragments/RadioCheckboxFragment";
 
 const UpdateSurveyItemDialog = () => {
   const theme = useTheme();
@@ -38,10 +38,10 @@ const UpdateSurveyItemDialog = () => {
     setValue("required", item?.required);
     setValue(
       "options",
-      (item?.schema?.enum &&
-        item?.schema?.enum.map((e, i) => ({
-          value: e,
-          label: item?.schema?.enumNames[i],
+      (item?.schema?.oneOf &&
+        item?.schema?.oneOf.map((e) => ({
+          value: e.const,
+          label: e.title,
         }))) ||
         []
     );
@@ -63,11 +63,12 @@ const UpdateSurveyItemDialog = () => {
       },
     });
 
-    if (item.type === "radio") {
-      item.schema.enum = data.options.map((e) => e.value);
-      item.schema.enumNames = data.options.map((e) => e.label);
+    if (item.type === "radio" || item.type === "checkbox") {
+      item.schema.oneOf = data.options.map((e) => ({
+        const: e.value,
+        title: e.label,
+      }));
     }
-    console.log(item, surveyItem);
     dispatch({ type: UPDATE, payload: item });
   };
 
@@ -154,8 +155,8 @@ const UpdateSurveyItemDialog = () => {
                   }}
                 />
               </Grid>
-              {surveyItem?.type === "radio" && (
-                <RadioFragment control={control} errors={errors} />
+              {["radio", "checkbox"].includes(surveyItem?.type) && (
+                <RadioCheckboxFragmentProps control={control} errors={errors} />
               )}
             </Grid>
           </DialogContent>

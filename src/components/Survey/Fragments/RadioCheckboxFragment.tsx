@@ -4,12 +4,15 @@ import { Box } from "@mui/system";
 import { Add, Delete } from "@mui/icons-material";
 import { Controller, FieldErrors, useFieldArray } from "react-hook-form";
 
-type RadioFragmentProps = {
+type RadioCheckboxFragmentProps = {
   control: any;
   errors: FieldErrors<any>;
 };
 
-const RadioFragment = ({ control, errors }: RadioFragmentProps) => {
+const RadioCheckboxFragment = ({
+  control,
+  errors,
+}: RadioCheckboxFragmentProps) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "options",
@@ -123,4 +126,4 @@ const RadioFragment = ({ control, errors }: RadioFragmentProps) => {
   );
 };
 
-export default RadioFragment;
+export default RadioCheckboxFragment;

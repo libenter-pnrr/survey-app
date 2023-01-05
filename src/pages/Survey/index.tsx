@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Fab } from "@mui/material";
 import { formElements } from "./data/components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { SET_QUESTIONS } from "../../reducers/Survey/actions";
@@ -9,9 +9,10 @@ import SurveyBuilder from "@components/Survey/SurveyBuilder";
 import copy from "../../common/utils/copy";
 import reorder from "../../common/utils/reorder";
 import SurveyToolbar from "@components/Survey/SurveyToolbar";
+import { Save } from "@mui/icons-material";
 
 const Survey = () => {
-  const { questions, display, dispatch } = useSurveyContext();
+  const { questions, display, dispatch, title } = useSurveyContext();
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -53,6 +54,11 @@ const Survey = () => {
           </Box>
         </DragDropContext>
       </Box>
+      {title && questions.length > 0 && (
+        <Fab color="primary" sx={{ position: "fixed", bottom: 20, right: 30 }}>
+          <Save />
+        </Fab>
+      )}
     </React.Fragment>
   );
 };

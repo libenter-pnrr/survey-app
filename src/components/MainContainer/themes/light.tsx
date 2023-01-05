@@ -9,9 +9,9 @@ export const lightTheme: ThemeOptions = {
       dark: "#99004d",
     },
     secondary: {
-      main: "#fbdb4a",
-      light: "#ffff7d",
-      dark: "#c5aa07",
+      main: "#616161",
+      light: "#8e8e8e",
+      dark: "#373737",
     },
   },
 };

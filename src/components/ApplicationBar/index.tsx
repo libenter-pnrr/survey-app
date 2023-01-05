@@ -50,7 +50,7 @@ const ApplicationBar = () => {
 
   return (
     <AppBar position="static" color="primary" elevation={0}>
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography

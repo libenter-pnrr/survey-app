@@ -29,7 +29,7 @@ export const FormItemBuilder = (theme: Theme) => ({
   transition: "all 0.5s ease-out",
   "&:hover,&:focus": {
     border: `1px solid ${theme.palette.primary.main}`,
-    "& .toolBarContent > svg": {
+    "& .toolBarContent": {
       visibility: "visible",
     },
   },
@@ -37,9 +37,7 @@ export const FormItemBuilder = (theme: Theme) => ({
     display: "flex",
     alignItems: "center",
     alignContent: "center",
-    "> svg": {
-      visibility: "hidden",
-    },
+    visibility: "hidden",
   },
 });
 

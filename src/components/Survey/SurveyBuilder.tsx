@@ -1,15 +1,15 @@
 import React from "react";
 import {
   Box,
+  Button,
+  ButtonGroup,
   Card,
   CardContent,
   Container,
-  IconButton,
   InputBase,
   Theme,
   Tooltip,
   Typography,
-  unstable_useId,
 } from "@mui/material";
 import useSurveyContext from "../../contexts/SurveyContext";
 import DeleteSurveyDialog from "@components/Survey/DeleteSurveyDialog";
@@ -130,41 +130,43 @@ const SurveyBuilder = () => {
                                     sx={{ flexGrow: 0 }}
                                     className="toolBarContent"
                                   >
-                                    <Tooltip title="Open settings">
-                                      <IconButton
-                                        onClick={() =>
-                                          handleOpenUpdate(element.id)
-                                        }
-                                      >
-                                        <Edit />
-                                      </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Duplica">
-                                      <IconButton
-                                        onClick={() =>
-                                          dispatch({
-                                            type: DUPLICATE,
-                                            payload: Object.assign(
-                                              { ...element },
-                                              {
-                                                id: uuid(),
-                                              }
-                                            ),
-                                          })
-                                        }
-                                      >
-                                        <ContentCopy />
-                                      </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Elimina">
-                                      <IconButton
-                                        onClick={() =>
-                                          handleOpenDelete(element.id)
-                                        }
-                                      >
-                                        <Delete />
-                                      </IconButton>
-                                    </Tooltip>
+                                    <ButtonGroup size="small" color="secondary">
+                                      <Tooltip title="Modifica">
+                                        <Button
+                                          onClick={() =>
+                                            handleOpenUpdate(element.id)
+                                          }
+                                        >
+                                          <Edit fontSize="small" />
+                                        </Button>
+                                      </Tooltip>
+                                      <Tooltip title="Duplica">
+                                        <Button
+                                          onClick={() =>
+                                            dispatch({
+                                              type: DUPLICATE,
+                                              payload: Object.assign(
+                                                { ...element },
+                                                {
+                                                  id: uuid(),
+                                                }
+                                              ),
+                                            })
+                                          }
+                                        >
+                                          <ContentCopy fontSize="small" />
+                                        </Button>
+                                      </Tooltip>
+                                      <Tooltip title="Elimina">
+                                        <Button
+                                          onClick={() =>
+                                            handleOpenDelete(element.id)
+                                          }
+                                        >
+                                          <Delete fontSize="small" />
+                                        </Button>
+                                      </Tooltip>
+                                    </ButtonGroup>
                                   </Box>
                                 </Box>
                                 <Form

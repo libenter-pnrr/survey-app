@@ -3,7 +3,17 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 export type FormElementProps = {
   id: string;
-  type: "text" | "textarea" | "radio";
+  type:
+    | "text"
+    | "textarea"
+    | "radio"
+    | "number"
+    | "checkbox"
+    | "select"
+    | "date"
+    | "time"
+    | "number"
+    | "email";
   required?: boolean;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
