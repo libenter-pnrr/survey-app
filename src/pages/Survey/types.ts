@@ -4,7 +4,6 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 export type FormElementProps = {
   id: string;
   type: "text" | "textarea" | "radio";
-  title: string;
   required?: boolean;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;

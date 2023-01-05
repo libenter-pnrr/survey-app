@@ -5,20 +5,20 @@ export const formElements: FormElementProps[] = [
   {
     id: "1",
     type: "text",
-    title: "Text Input",
     icon: TextFields,
     schema: {
       type: "string",
+      title: "Text Input",
       description: "Una descrizione del campo",
     },
   },
   {
     id: "2",
     type: "textarea",
-    title: "Text Area",
     icon: Notes,
     schema: {
       type: "string",
+      title: "Text Area",
       description: "Una descrizione del campo",
     },
     uiSchema: {
@@ -28,10 +28,10 @@ export const formElements: FormElementProps[] = [
   {
     id: "3",
     type: "radio",
-    title: "Radio Select",
     icon: RadioButtonChecked,
     schema: {
       type: "string",
+      title: "Radio Select",
       description: "Una descrizione del campo",
       enum: [1, 2, 3],
       enumNames: ["one", "two", "three"],

@@ -9,6 +9,7 @@ import {
   Theme,
   Tooltip,
   Typography,
+  unstable_useId,
 } from "@mui/material";
 import useSurveyContext from "../../contexts/SurveyContext";
 import DeleteSurveyDialog from "@components/Survey/DeleteSurveyDialog";
@@ -16,7 +17,8 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { FormElementProps } from "pages/Survey/types";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import { Dehaze, Delete, Edit } from "@mui/icons-material";
+import { ContentCopy, Dehaze, Delete, Edit } from "@mui/icons-material";
+import { v4 as uuid } from "uuid";
 import {
   FormItemBuilder,
   FormItemBuilderToolbar,
@@ -25,6 +27,7 @@ import {
   TextInputTitleBuilder,
 } from "./SurveyBuilder.style";
 import {
+  DUPLICATE,
   SET_DESCRIPTION,
   SET_TITLE,
   SET_TO_DELETE,
@@ -43,7 +46,6 @@ const SurveyBuilder = () => {
     dispatch({ type: SET_TO_UPDATE, payload: id });
   };
 
-  console.log(questions);
   return (
     <React.Fragment>
       <DeleteSurveyDialog />
@@ -123,16 +125,6 @@ const SurveyBuilder = () => {
                                     <Box className="toolBarContent">
                                       <Dehaze />
                                     </Box>
-                                    <Box
-                                      sx={{
-                                        marginLeft: 2,
-                                      }}
-                                    >
-                                      <Typography variant="body2">
-                                        {element.title || "N.D."}
-                                        {element.required && <span> *</span>}
-                                      </Typography>
-                                    </Box>
                                   </Box>
                                   <Box
                                     sx={{ flexGrow: 0 }}
@@ -145,6 +137,23 @@ const SurveyBuilder = () => {
                                         }
                                       >
                                         <Edit />
+                                      </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Duplica">
+                                      <IconButton
+                                        onClick={() =>
+                                          dispatch({
+                                            type: DUPLICATE,
+                                            payload: Object.assign(
+                                              { ...element },
+                                              {
+                                                id: uuid(),
+                                              }
+                                            ),
+                                          })
+                                        }
+                                      >
+                                        <ContentCopy />
                                       </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Elimina">

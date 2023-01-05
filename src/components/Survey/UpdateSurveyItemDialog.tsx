@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import useSurveyContext from "@contexts/SurveyContext";
-import { SET_TO_UPDATE } from "@reducers/Survey/actions";
+import { SET_TO_UPDATE, UPDATE } from "@reducers/Survey/actions";
 import RadioFragment from "./Fragments/RadioFragment";
 
 const UpdateSurveyItemDialog = () => {
@@ -33,7 +33,7 @@ const UpdateSurveyItemDialog = () => {
     if (toUpdate === null) return;
     const item = questions.find((q) => q.id === toUpdate);
     setSurveyItem(item);
-    setValue("title", item?.title);
+    setValue("title", item?.schema?.title);
     setValue("description", item?.schema?.description);
     setValue("required", item?.required);
     setValue(
@@ -53,7 +53,22 @@ const UpdateSurveyItemDialog = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    const item = { ...surveyItem };
+    Object.assign(item, {
+      required: data.required,
+      schema: {
+        ...item.schema,
+        title: data.title,
+        description: data.description,
+      },
+    });
+
+    if (item.type === "radio") {
+      item.schema.enum = data.options.map((e) => e.value);
+      item.schema.enumNames = data.options.map((e) => e.label);
+    }
+    console.log(item, surveyItem);
+    dispatch({ type: UPDATE, payload: item });
   };
 
   return (
@@ -102,9 +117,6 @@ const UpdateSurveyItemDialog = () => {
                 <Controller
                   name={"description"}
                   control={control}
-                  rules={{
-                    required: { value: true, message: "Campo Obbligatorio" },
-                  }}
                   render={({ field: { onChange, value } }) => (
                     <TextField
                       fullWidth
@@ -112,15 +124,10 @@ const UpdateSurveyItemDialog = () => {
                       onChange={onChange}
                       value={value}
                       label={"Descrizione del campo"}
-                      error={Boolean(errors["description"])}
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      helperText={
-                        errors["description"]
-                          ? errors["description"].message
-                          : null
-                      }
+                      helperText={"Una semplice descrizione del campo"}
                     />
                   )}
                 />

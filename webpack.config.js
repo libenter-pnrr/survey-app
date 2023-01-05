@@ -10,6 +10,8 @@ module.exports = (env) => {
       path: path.join(__dirname, "dist"),
       filename: "bundle.js",
     },
+
+    devtool: "inline-source-map",
     resolve: {
       alias: {
         "@components": path.join(__dirname, "src/components"),

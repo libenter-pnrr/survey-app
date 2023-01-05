@@ -45,7 +45,7 @@ const FormListItem = ({ element, provided, snapshot }: FormListItemProps) => {
             fontSize: 14,
           },
         }}
-        primary={element.title}
+        primary={element?.schema?.title}
       />
     </ListItem>
   );

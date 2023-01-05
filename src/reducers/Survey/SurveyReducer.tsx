@@ -7,6 +7,7 @@ import {
   DELETE,
   SET_TO_UPDATE,
   UPDATE,
+  DUPLICATE,
 } from "@reducers/Survey/actions";
 import { ISurveyReducerState } from "../../pages/Survey/types";
 
@@ -40,12 +41,22 @@ export const SurveyReducer = (
       );
       return { ...state, questions: newQuestions, toDelete: null };
     }
+    case DUPLICATE: {
+      console.log(action.payload);
+      return { ...state, questions: [...state.questions, action.payload] };
+    }
     case SET_TO_UPDATE:
       return { ...state, toUpdate: action.payload };
     case UPDATE: {
-      const newQuestions = state.questions.forEach((question) =>
-        question.id === state.toUpdate ? action.payload : question
-      );
+      const newQuestions = [];
+      for (const question of state.questions) {
+        if (question.id === action.payload.id) {
+          Object.assign(question, action.payload);
+        }
+
+        newQuestions.push(question);
+      }
+
       return { ...state, questions: newQuestions, toUpdate: null };
     }
   }
