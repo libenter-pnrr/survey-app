@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { FormElementProps } from "../../pages/Survey/types";
-import FormListItem from "@components/FormListItem";
-import { formElements } from "../../pages/Survey/data/components";
+import { FormElementProps } from "../../models/Survey/types";
+import FormListItem from "@application/components/FormListItem";
+import { formElements } from "../../../pages/Survey/data/components";
 
 const Sidebar = () => {
   return (

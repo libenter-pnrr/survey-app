@@ -14,7 +14,7 @@ module.exports = (env) => {
     devtool: "inline-source-map",
     resolve: {
       alias: {
-        "@components": path.join(__dirname, "src/components"),
+        "@application": path.join(__dirname, "src/application"),
         "@pages": path.join(__dirname, "src/pages"),
         "@hooks": path.join(__dirname, "src/hooks"),
         "@contexts": path.join(__dirname, "src/contexts"),

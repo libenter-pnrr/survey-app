@@ -7,7 +7,7 @@ import {
   RadioButtonChecked,
   TextFields,
 } from "@mui/icons-material";
-import { FormElementProps } from "../types";
+import { FormElementProps } from "../../../application/models/Survey/types";
 
 export const formElements: FormElementProps[] = [
   {

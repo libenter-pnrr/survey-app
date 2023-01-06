@@ -1,3 +1,4 @@
+import { ISurveyReducerState } from "@application/models/Survey/ISurveyReducerState";
 import {
   SET_DESCRIPTION,
   SET_QUESTIONS,
@@ -9,7 +10,6 @@ import {
   UPDATE,
   DUPLICATE,
 } from "@reducers/Survey/actions";
-import { ISurveyReducerState } from "../../pages/Survey/types";
 
 export const surveyReducerInitialState: ISurveyReducerState = {
   title: "",

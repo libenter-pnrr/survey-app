@@ -11,10 +11,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import useSurveyContext from "../../contexts/SurveyContext";
-import DeleteSurveyDialog from "@components/Survey/DeleteSurveyDialog";
+import useSurveyContext from "../../../contexts/SurveyContext";
+import DeleteSurveyDialog from "@application/components/Survey/DeleteSurveyDialog";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { FormElementProps } from "pages/Survey/types";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import { ContentCopy, Dehaze, Delete, Edit } from "@mui/icons-material";
@@ -34,6 +33,7 @@ import {
   SET_TO_UPDATE,
 } from "@reducers/Survey/actions";
 import UpdateSurveyItemDialog from "./UpdateSurveyItemDialog";
+import { FormElementProps } from "@application/models/Survey/FormElementProps";
 
 const SurveyBuilder = () => {
   const { questions, title, description, dispatch } = useSurveyContext();

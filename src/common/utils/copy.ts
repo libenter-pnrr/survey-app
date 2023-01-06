@@ -1,5 +1,5 @@
 import { DraggableLocation } from "react-beautiful-dnd";
-import { FormElementProps } from "../../pages/Survey/types";
+import { FormElementProps } from "../../application/models/Survey/types";
 import { v4 as uuid } from "uuid";
 /**
  * Moves an item from one list to another list.

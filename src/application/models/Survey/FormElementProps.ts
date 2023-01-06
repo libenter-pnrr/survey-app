@@ -1,5 +1,6 @@
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { RJSFSchema, UiSchema } from "@rjsf/utils";
 
 export type FormElementProps = {
   id: string;
@@ -18,23 +19,6 @@ export type FormElementProps = {
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
-  schema: any;
-  uiSchema?: any;
-};
-
-export interface ISurveyReducerState {
-  title: string;
-  description: string;
-  toDelete?: string;
-  toUpdate?: string;
-  display: string;
-  questions: FormElementProps[];
-}
-
-export interface ISurveyContext extends ISurveyReducerState {
-  dispatch: React.Dispatch<any>;
-}
-
-export type SurveyContextProps = {
-  children: React.ReactNode;
+  schema: RJSFSchema;
+  uiSchema?: UiSchema;
 };

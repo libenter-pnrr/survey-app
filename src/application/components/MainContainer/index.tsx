@@ -1,11 +1,11 @@
 import React from "react";
-import { useApplicationContext } from "../../contexts/ApplicationProvider";
+import { useApplicationContext } from "../../../contexts/ApplicationProvider";
 import { lightTheme } from "./themes/light";
 import { darkTheme } from "./themes/dark";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
-import Routing from "../../common/Routing";
+import Routing from "../../../common/Routing";
 import ApplicationBar from "../ApplicationBar";
 
 interface IMainContainer {

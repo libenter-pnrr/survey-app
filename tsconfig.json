@@ -4,9 +4,6 @@
     "jsx": "react",
     "esModuleInterop": true,
     "paths": {
-      "@components/*": [
-        "./components/*"
-      ],
       "@pages/*": [
         "./pages/*"
       ],
@@ -21,6 +18,9 @@
       ],
       "@reducers/*": [
         "./reducers/*"
+      ],
+      "@application/*": [
+        "./application/*"
       ]
     }
   },

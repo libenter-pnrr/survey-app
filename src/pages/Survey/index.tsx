@@ -3,13 +3,14 @@ import { Box, Fab } from "@mui/material";
 import { formElements } from "./data/components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { SET_QUESTIONS } from "../../reducers/Survey/actions";
-import Sidebar from "@components/Survey/Sidebar";
+import Sidebar from "@application/components/Survey/Sidebar";
 import useSurveyContext from "../../contexts/SurveyContext";
-import SurveyBuilder from "@components/Survey/SurveyBuilder";
+import SurveyBuilder from "@application/components/Survey/SurveyBuilder";
 import copy from "../../common/utils/copy";
 import reorder from "../../common/utils/reorder";
-import SurveyToolbar from "@components/Survey/SurveyToolbar";
+import SurveyToolbar from "@application/components/Survey/SurveyToolbar";
 import { Save } from "@mui/icons-material";
+import SurveyPreview from "@application/components/Survey/SurveyPreview";
 
 const Survey = () => {
   const { questions, display, dispatch, title } = useSurveyContext();
@@ -50,7 +51,7 @@ const Survey = () => {
           <Sidebar />
           <Box sx={{ flexGrow: 1, overflow: "auto" }}>
             {display === "builder" && <SurveyBuilder />}
-            {display === "preview" && <div>Preview</div>}
+            {display === "preview" && <SurveyPreview />}
           </Box>
         </DragDropContext>
       </Box>
