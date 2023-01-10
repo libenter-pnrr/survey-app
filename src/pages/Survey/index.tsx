@@ -11,9 +11,26 @@ import reorder from "../../common/utils/reorder";
 import SurveyToolbar from "@application/components/Survey/SurveyToolbar";
 import { Save } from "@mui/icons-material";
 import SurveyPreview from "@application/components/Survey/SurveyPreview";
+import useCreateSurvey from "@hooks/Survey/useCreateSurvey";
+import buildFormSchema from "@common/utils/buildFormSchema";
 
 const Survey = () => {
-  const { questions, display, dispatch, title } = useSurveyContext();
+  const { questions, display, dispatch, title, description } =
+    useSurveyContext();
+  const { mutateAsync: createSurvey } = useCreateSurvey();
+
+  const handleCreateSurvey = async () => {
+    const { schema, uiSchema } = buildFormSchema(title, description, questions);
+
+    await createSurvey({
+      data: {
+        title,
+        description,
+        schema,
+        uiSchema,
+      },
+    });
+  };
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -57,7 +74,7 @@ const Survey = () => {
       </Box>
       {title && questions.length > 0 && (
         <Fab color="primary" sx={{ position: "fixed", bottom: 20, right: 30 }}>
-          <Save />
+          <Save onClick={handleCreateSurvey} />
         </Fab>
       )}
     </React.Fragment>
