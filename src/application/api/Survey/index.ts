@@ -1,11 +1,22 @@
 "use strict";
 
-import { ICreateSurveyPayload } from "@application/models/Survey/ICreateSurveyPayload";
+import {
+  ICreateSurveyPayload,
+  IGetSurveysResponse,
+} from "@application/models/Survey/ICreateSurveyPayload";
 import { http } from "../http";
 
-const createSurvey = async (payload: ICreateSurveyPayload): Promise<any> => {
+const createSurvey = async (payload: ICreateSurveyPayload): Promise<null> => {
   const { token, ...rest } = payload;
-  const { data } = await http.post(`/survey`, rest, {
+  return await http.post(`/survey`, rest, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+const getSurveys = async (token: string): Promise<IGetSurveysResponse> => {
+  const { data } = await http.get(`/survey`, {
     headers: {
       authorization: `Bearer ${token}`,
     },
@@ -13,4 +24,4 @@ const createSurvey = async (payload: ICreateSurveyPayload): Promise<any> => {
   return data;
 };
 
-export { createSurvey };
+export { createSurvey, getSurveys };

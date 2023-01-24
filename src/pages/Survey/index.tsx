@@ -1,84 +1,70 @@
 import React from "react";
-import { Box, Fab } from "@mui/material";
-import { formElements } from "./data/components";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { SET_QUESTIONS } from "../../reducers/Survey/actions";
-import Sidebar from "@application/components/Survey/Sidebar";
-import useSurveyContext from "../../contexts/SurveyContext";
-import SurveyBuilder from "@application/components/Survey/SurveyBuilder";
-import copy from "../../common/utils/copy";
-import reorder from "../../common/utils/reorder";
-import SurveyToolbar from "@application/components/Survey/SurveyToolbar";
-import { Save } from "@mui/icons-material";
-import SurveyPreview from "@application/components/Survey/SurveyPreview";
-import useCreateSurvey from "@hooks/Survey/useCreateSurvey";
-import buildFormSchema from "@common/utils/buildFormSchema";
+import useSurvey from "@hooks/Survey/useSurvey";
+import { Button, Container, Toolbar, Typography } from "@mui/material";
+import FullScreenLoader from "@application/components/FullScreenLoader";
+import { MenuIcon } from "@application/components/MenuIcon";
+import Table from "@application/components/Table/Table";
+import { useNavigate } from "react-router-dom";
 
-const Survey = () => {
-  const { questions, display, dispatch, title, description } =
-    useSurveyContext();
-  const { mutateAsync: createSurvey } = useCreateSurvey();
-
-  const handleCreateSurvey = async () => {
-    const { schema, uiSchema } = buildFormSchema(title, description, questions);
-
-    await createSurvey({
-      data: {
-        title,
-        description,
-        schema,
-        uiSchema,
+const SurveyDashboard = () => {
+  const { isLoading, data } = useSurvey();
+  const navigate = useNavigate();
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "",
+        accessor: "actions",
+        Cell: ({ row: { original } }) => (
+          <MenuIcon
+            options={[
+              {
+                label: "Configura",
+                onClick: () => console.log("Configura", original),
+              },
+            ]}
+          />
+        ),
+        width: 10,
+        maxWidth: 50,
       },
-    });
-  };
-
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
-    // dropped outside the list
-    if (!destination) {
-      return;
-    }
-
-    switch (source.droppableId) {
-      case "FORM":
-        dispatch({
-          type: SET_QUESTIONS,
-          payload: reorder(questions, source.index, destination.index),
-        });
-        break;
-      case "ITEMS":
-        dispatch({
-          type: SET_QUESTIONS,
-          payload: copy(formElements, questions, source, destination),
-        });
-        break;
-    }
-  };
+      {
+        Header: "Titolo",
+        accessor: "title",
+      },
+      {
+        Header: "Data di creazione",
+        accessor: "creation_date",
+      },
+      {
+        Header: "Descrizione",
+        accessor: "description",
+      },
+    ],
+    []
+  );
 
   return (
     <React.Fragment>
-      <SurveyToolbar />
-      <Box
+      <Toolbar
         sx={{
           display: "flex",
-          height: "calc(100vh - 133px)",
+          alignItems: "center",
+          justifyContent: "space-between",
+          px: [1],
+          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <DragDropContext onDragEnd={(e: DropResult) => onDragEnd(e)}>
-          <Sidebar />
-          <Box sx={{ flexGrow: 1, overflow: "auto" }}>
-            {display === "builder" && <SurveyBuilder />}
-            {display === "preview" && <SurveyPreview />}
-          </Box>
-        </DragDropContext>
-      </Box>
-      {title && questions.length > 0 && (
-        <Fab color="primary" sx={{ position: "fixed", bottom: 20, right: 30 }}>
-          <Save onClick={handleCreateSurvey} />
-        </Fab>
-      )}
+        <Typography variant="button">Questionari</Typography>
+        <Button variant="outlined" onClick={() => navigate("/survey/create")}>
+          Nuovo
+        </Button>
+      </Toolbar>
+      <Container sx={{ py: 2 }}>
+        {isLoading && <FullScreenLoader />}
+        {!isLoading && data && <Table columns={columns} data={data} />}
+      </Container>
     </React.Fragment>
   );
 };
 
-export default Survey;
+export default SurveyDashboard;
