@@ -1,5 +1,5 @@
+import { FormElementProps } from "@application/models/Survey/FormElementProps";
 import { DraggableLocation } from "react-beautiful-dnd";
-import { FormElementProps } from "../../application/models/Survey/types";
 import { v4 as uuid } from "uuid";
 /**
  * Moves an item from one list to another list.
@@ -14,6 +14,9 @@ export default function copy(
   const destClone = [...destination];
   const item = sourceClone[droppableSource.index];
 
-  destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });
+  destClone.splice(droppableDestination.index, 0, {
+    ...item,
+    id: `${uuid()}__${item.type}`,
+  });
   return destClone;
 }

@@ -1,13 +1,36 @@
 import React from "react";
-import useSurvey from "@hooks/Survey/useSurvey";
-import { Button, Container, Toolbar, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Box,
+  DialogActions,
+} from "@mui/material";
 import FullScreenLoader from "@application/components/FullScreenLoader";
 import { MenuIcon } from "@application/components/MenuIcon";
 import Table from "@application/components/Table/Table";
 import { useNavigate } from "react-router-dom";
+import { useSurveys } from "@hooks/Survey/useSurveys";
+import { Add, Warning } from "@mui/icons-material";
+import { useKeycloak } from "@react-keycloak/web";
+import { deleteSurvey } from "@application/api/Survey";
 
 const SurveyDashboard = () => {
-  const { isLoading, data } = useSurvey();
+  const { surveys, isLoading, loadSurveys } = useSurveys();
+  const [toDelete, setToDelete] = React.useState<{ id: string; title: string }>(
+    { id: "", title: "" }
+  );
+  const { keycloak } = useKeycloak();
+
+  const handleCloseDelete = () => {
+    setToDelete({ id: "", title: "" });
+  };
+
   const navigate = useNavigate();
   const columns = React.useMemo(
     () => [
@@ -19,7 +42,12 @@ const SurveyDashboard = () => {
             options={[
               {
                 label: "Configura",
-                onClick: () => console.log("Configura", original),
+                onClick: () => navigate(`/survey/${original.id}/edit`),
+              },
+              {
+                label: "Elimina",
+                onClick: () =>
+                  setToDelete({ id: original.id, title: original.title }),
               },
             ]}
           />
@@ -43,8 +71,51 @@ const SurveyDashboard = () => {
     []
   );
 
+  const handleDelete = () => {
+    deleteSurvey({
+      id: toDelete.id,
+      token: keycloak.token,
+    })
+      .then(() => {
+        handleCloseDelete();
+        loadSurveys();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <React.Fragment>
+      <Dialog open={toDelete?.id !== ""} onClose={handleCloseDelete}>
+        <DialogTitle>Confermi l'operazione?</DialogTitle>
+        <DialogContent>
+          <Box
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Warning color="error" fontSize="large" />
+          </Box>
+          <DialogContentText>
+            Sei sicuro di voler eliminare il questionario{" "}
+            <strong>{toDelete.title}</strong>? L'operazione non è reversibile.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleCloseDelete} color="secondary">
+            Annulla
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleDelete}
+            autoFocus
+          >
+            Elimina
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Toolbar
         sx={{
           display: "flex",
@@ -55,13 +126,13 @@ const SurveyDashboard = () => {
         }}
       >
         <Typography variant="button">Questionari</Typography>
-        <Button variant="outlined" onClick={() => navigate("/survey/create")}>
-          Nuovo
+        <Button onClick={() => navigate("/survey/create")}>
+          Crea <Add sx={{ ml: 1 }} />
         </Button>
       </Toolbar>
       <Container sx={{ py: 2 }}>
         {isLoading && <FullScreenLoader />}
-        {!isLoading && data && <Table columns={columns} data={data} />}
+        {!isLoading && surveys && <Table columns={columns} data={surveys} />}
       </Container>
     </React.Fragment>
   );

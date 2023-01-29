@@ -9,18 +9,46 @@ import { Save } from "@mui/icons-material";
 import SurveyPreview from "@application/components/Survey/SurveyPreview";
 import buildFormSchema from "@common/utils/buildFormSchema";
 import { onDragEnd } from "@common/utils/drag";
-import { createSurvey } from "@application/api/Survey";
+import { useParams } from "react-router-dom";
+import { useGetSurvey } from "@hooks/Survey/useGetSurvey";
+import FullScreenLoader from "@application/components/FullScreenLoader";
+import buildQuestion from "@common/utils/buildQuestion";
+import {
+  SET_DESCRIPTION,
+  SET_QUESTIONS,
+  SET_TITLE,
+} from "@reducers/Survey/actions";
+import { updateSurvey } from "@application/api/Survey";
 import { useKeycloak } from "@react-keycloak/web";
 
-const CreateSurvey = () => {
+const UpdateSurvey = () => {
   const { questions, display, dispatch, title, description } =
     useSurveyContext();
+  const { id } = useParams<{ id: string }>();
+  const { isLoading, survey } = useGetSurvey(id);
   const { keycloak } = useKeycloak();
 
-  const handleCreateSurvey = async () => {
-    const { schema, uiSchema } = buildFormSchema(title, description, questions);
+  React.useEffect(() => {
+    if (!isLoading && survey) {
+      dispatch({
+        type: SET_TITLE,
+        payload: survey.title,
+      });
+      dispatch({
+        type: SET_DESCRIPTION,
+        payload: survey.description,
+      });
+      dispatch({
+        type: SET_QUESTIONS,
+        payload: buildQuestion(survey),
+      });
+    }
+  }, [isLoading, survey]);
 
-    await createSurvey({
+  const handleUpdateSurvey = async () => {
+    const { schema, uiSchema } = buildFormSchema(title, description, questions);
+    await updateSurvey({
+      id: survey.id,
       token: keycloak.token,
       title,
       description,
@@ -31,6 +59,7 @@ const CreateSurvey = () => {
 
   return (
     <React.Fragment>
+      {isLoading && <FullScreenLoader />}
       <SurveyToolbar />
       <Box
         sx={{
@@ -50,11 +79,11 @@ const CreateSurvey = () => {
       </Box>
       {title && questions.length > 0 && (
         <Fab color="primary" sx={{ position: "fixed", bottom: 20, right: 30 }}>
-          <Save onClick={handleCreateSurvey} />
+          <Save onClick={handleUpdateSurvey} />
         </Fab>
       )}
     </React.Fragment>
   );
 };
 
-export default CreateSurvey;
+export default UpdateSurvey;

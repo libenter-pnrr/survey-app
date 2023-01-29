@@ -1,4 +1,5 @@
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
+import { FormElementProps } from "./FormElementProps";
 
 export interface Survey {
   id: string;
@@ -6,4 +7,5 @@ export interface Survey {
   description: string;
   schema?: RJSFSchema;
   uiSchema?: UiSchema;
+  questions?: FormElementProps[];
 }

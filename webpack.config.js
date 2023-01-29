@@ -7,10 +7,10 @@ const Dotenv = require("dotenv-webpack");
 module.exports = (env) => {
   return {
     output: {
-      path: path.join(__dirname, "dist"),
-      filename: "bundle.js",
+      publicPath: "/",
+      filename: "[name].js",
+      clean: true,
     },
-
     devtool: "inline-source-map",
     resolve: {
       alias: {

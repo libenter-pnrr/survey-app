@@ -3,10 +3,8 @@ import {
   SurveyReducer,
   surveyReducerInitialState,
 } from "../reducers/Survey/SurveyReducer";
-import {
-  ISurveyContext,
-  SurveyContextProps,
-} from "../application/models/Survey/types";
+import { ISurveyContext } from "@application/models/Survey/ISurveyContext";
+import { SurveyContextProps } from "@application/models/Survey/SurveyContextProps";
 
 const SurveyContext = React.createContext<ISurveyContext>({
   title: "",

@@ -1,3 +1,4 @@
+import { FormElementProps } from "@application/models/Survey/FormElementProps";
 import {
   AlternateEmail,
   CheckBox,
@@ -7,7 +8,6 @@ import {
   RadioButtonChecked,
   TextFields,
 } from "@mui/icons-material";
-import { FormElementProps } from "../../../application/models/Survey/types";
 
 export const formElements: FormElementProps[] = [
   {

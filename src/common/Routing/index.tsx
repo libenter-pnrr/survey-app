@@ -4,13 +4,15 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useApplicationContext } from "../../contexts/ApplicationProvider";
 import CreateSurvey from "@pages/Survey/CreateSurvey";
+import Dashboard from "@pages/Dashboard";
+import UpdateSurvey from "@pages/Survey/UpdateSurvey";
 
 const Routing = () => {
   const { roles } = useApplicationContext();
 
   return (
     <Routes>
-      <Route path="/" element={<div>Dashboard</div>} />
+      <Route path="/" element={<Dashboard />} />
       {roles.includes("create-survey") && (
         <React.Fragment>
           <Route path="/survey" element={<Survey />} />
@@ -19,6 +21,14 @@ const Routing = () => {
             element={
               <SurveyProvider>
                 <CreateSurvey />
+              </SurveyProvider>
+            }
+          />
+          <Route
+            path="/survey/:id/edit"
+            element={
+              <SurveyProvider>
+                <UpdateSurvey />
               </SurveyProvider>
             }
           />
