@@ -7,5 +7,12 @@ export const getMenu = (roles: string[]) => {
     });
   }
 
+  if (roles.includes("project")) {
+    menu.push({
+      title: "Progetti",
+      path: "/projects",
+    });
+  }
+
   return menu;
 };
