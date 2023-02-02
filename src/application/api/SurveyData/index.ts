@@ -1,5 +1,7 @@
 import ISearchSurveyDataRequest from "@application/models/SurveyData/ISearchSurveyDataRequest";
-import ISearchSurveyDataResponse from "@application/models/SurveyData/ISearchSurveyDataResponse";
+import ISearchSurveyDataResponse, {
+  ISearchSurveyData,
+} from "@application/models/SurveyData/ISearchSurveyDataResponse";
 import { http } from "../http";
 
 export const getSurveyData = async ({
@@ -9,8 +11,8 @@ export const getSurveyData = async ({
   provinces,
   offset,
   limit,
-}: ISearchSurveyDataRequest): Promise<ISearchSurveyDataResponse> => {
-  return await http.post(
+}: ISearchSurveyDataRequest): Promise<ISearchSurveyData> => {
+  const response: ISearchSurveyDataResponse = await http.post(
     "/survey-data/search",
     {
       regions,
@@ -25,4 +27,6 @@ export const getSurveyData = async ({
       },
     }
   );
+
+  return response.data as ISearchSurveyData;
 };

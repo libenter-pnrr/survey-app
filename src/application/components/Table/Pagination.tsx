@@ -58,10 +58,8 @@ const TablePagination = ({
             marginLeft: "10px",
           }}
         >
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
+          Pagina <strong>{pageIndex + 1}</strong> di{" "}
+          <strong>{pageOptions.length}</strong>{" "}
         </Box>
       </Box>
       <Box

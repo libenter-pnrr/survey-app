@@ -1,8 +1,13 @@
 import React from "react";
-
+import { getSurveyData } from "@application/api/SurveyData";
+import {
+  ISearchSurveyData,
+  SurveyData,
+} from "@application/models/SurveyData/ISearchSurveyDataResponse";
 import { useKeycloak } from "@react-keycloak/web";
 import ControlledTable from "@application/components/Table/ControlledTable";
 import {
+  Button,
   Container,
   IconButton,
   Toolbar,
@@ -10,44 +15,49 @@ import {
   Typography,
 } from "@mui/material";
 import { Add, FilterList } from "@mui/icons-material";
-import { getProjectData } from "@application/api/Project";
-import {
-  ISearchProjectData,
-  ProjectData,
-} from "@application/models/Project/ISearchProjectDataResponse";
-import moment from "moment";
 
-const Project = () => {
+const SurveyDataDashboard = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Codice",
-        accessor: "code",
+        Header: "Codice Cup",
+        accessor: "cup_code",
       },
       {
-        Header: "Tipologia",
-        accessor: "type_description",
+        Header: "Questionario",
+        accessor: "survey_title",
+      },
+      {
+        Header: "Descrizione",
+        accessor: "survey_description",
+      },
+      {
+        Header: "Creato il",
+        accessor: "created_on",
+      },
+      {
+        Header: "Creato da",
+        accessor: "created_by",
       },
       {
         Header: "Cliente",
         accessor: "customer_name",
       },
       {
-        Header: "Stato",
+        Header: "Stato Cup",
         accessor: "cup_status",
       },
       {
-        Header: "Regione",
+        Header: "Tipologia Cup",
+        accessor: "cup_type",
+      },
+      {
+        Header: "Regione Cup",
         accessor: "region_name",
       },
       {
-        Header: "Provincia",
+        Header: "Provincia Cup",
         accessor: "province_name",
-      },
-      {
-        Header: "Data",
-        accessor: "generation_date",
-        Cell: ({ value }) => moment(value).format("DD/MM/YYYY"),
       },
     ],
     []
@@ -55,7 +65,7 @@ const Project = () => {
   const { keycloak } = useKeycloak();
 
   // We'll start our table without any data
-  const [data, setData] = React.useState<ProjectData[]>([]);
+  const [data, setData] = React.useState<SurveyData[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [pageCount, setPageCount] = React.useState(0);
   const fetchIdRef = React.useRef(0);
@@ -66,17 +76,17 @@ const Project = () => {
     setLoading(true);
     if (fetchId === fetchIdRef.current) {
       const startRow = pageSize * pageIndex;
+      const endRow = startRow + pageSize;
 
-      getProjectData({
+      getSurveyData({
         token: keycloak.token,
-        customer: "",
         regions: [],
-        cup: "",
+        search: "",
         provinces: [],
         offset: startRow,
-        limit: pageSize,
+        limit: endRow,
       })
-        .then((res: ISearchProjectData) => {
+        .then((res: ISearchSurveyData) => {
           setData(res.rows);
           setPageCount(Math.ceil(res.total / pageSize));
         })
@@ -100,7 +110,7 @@ const Project = () => {
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Typography variant="button">Progetti</Typography>
+        <Typography variant="button">Questionari</Typography>
         <div>
           <Tooltip title="Filtri">
             <IconButton onClick={() => {}}>
@@ -127,4 +137,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default SurveyDataDashboard;

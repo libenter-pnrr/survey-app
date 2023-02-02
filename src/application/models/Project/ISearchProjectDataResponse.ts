@@ -1,14 +1,10 @@
 import IResponse from "@application/api/Reponse/IResponse";
 
-export type SurveyData = {
+export type ProjectData = {
   id: string;
-  cup_code: string;
-  survey_title: string;
-  survey_description?: string;
-  created_on: string;
-  created_by: string;
-  customer_id: string;
-  customer_name: string;
+  code: string;
+  customer_id?: string;
+  customer_name?: string;
   cup_status: string;
   cup_type?: string;
   cup_cost?: number;
@@ -21,15 +17,15 @@ export type SurveyData = {
   province_acronym?: string;
   thematic_code?: string;
   thematic_description?: string;
-  type_code: string;
-  type_description: string;
+  type_code?: string;
+  type_description?: string;
   state_name?: string;
 };
 
-export interface ISearchSurveyData {
+export interface ISearchProjectData {
   total: number;
-  rows: SurveyData[];
+  rows: ProjectData[];
 }
 
-export default interface ISearchSurveyDataResponse
-  extends IResponse<ISearchSurveyData> {}
+export default interface ISearchProjectDataResponse
+  extends IResponse<ISearchProjectData> {}

@@ -2,6 +2,13 @@ export const getMenu = (roles: string[]) => {
   const menu: any[] = [];
   if (roles.includes("create-survey")) {
     menu.push({
+      title: "Wizard",
+      path: "/wizard",
+    });
+  }
+
+  if (roles.includes("survey")) {
+    menu.push({
       title: "Questionari",
       path: "/survey",
     });
