@@ -53,7 +53,12 @@ const ControlledTable = ({
   }, [fetchData, pageIndex, pageSize]);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        overflowX: "auto",
+      }}
+    >
       <MUITable data-testid="table" {...getTableProps()}>
         <TableHead>
           {headerGroups.map((headerGroup) => (
@@ -73,7 +78,13 @@ const ControlledTable = ({
             </TableRow>
           ))}
         </TableHead>
-        <TableBody {...getTableBodyProps()}>
+        <TableBody
+          {...getTableBodyProps()}
+          sx={{
+            maxHeight: "500px",
+            overflowY: "auto",
+          }}
+        >
           {page.map((row, i) => {
             prepareRow(row);
             return (

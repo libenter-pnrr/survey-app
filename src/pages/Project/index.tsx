@@ -11,11 +11,15 @@ import {
 } from "@mui/material";
 import { Add, FilterList } from "@mui/icons-material";
 import { getProjectData } from "@application/api/Project";
-import {
-  ISearchProjectData,
-  ProjectData,
-} from "@application/models/Project/ISearchProjectDataResponse";
+import { ISearchProjectData } from "@application/models/Project/ISearchProjectDataResponse";
 import moment from "moment";
+import useProjectContext from "@contexts/ProjectContext";
+import {
+  OPEN_FILTER,
+  SET_LOADING,
+  SET_RESULTS,
+} from "@reducers/Project/actions";
+import FilterDrawer from "./FilterDrawer";
 
 const Project = () => {
   const columns = React.useMemo(
@@ -53,44 +57,47 @@ const Project = () => {
     []
   );
   const { keycloak } = useKeycloak();
+  const { loading, rows, pageCount, filter, dispatch } = useProjectContext();
 
-  // We'll start our table without any data
-  const [data, setData] = React.useState<ProjectData[]>([]);
-  const [loading, setLoading] = React.useState(false);
-  const [pageCount, setPageCount] = React.useState(0);
   const fetchIdRef = React.useRef(0);
 
-  const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
-    const fetchId = ++fetchIdRef.current;
+  const fetchData = React.useCallback(
+    ({ pageSize, pageIndex }) => {
+      const fetchId = ++fetchIdRef.current;
 
-    setLoading(true);
-    if (fetchId === fetchIdRef.current) {
-      const startRow = pageSize * pageIndex;
+      dispatch({ type: SET_LOADING, payload: true });
+      if (fetchId === fetchIdRef.current) {
+        const startRow = pageSize * pageIndex;
 
-      getProjectData({
-        token: keycloak.token,
-        customer: "",
-        regions: [],
-        cup: "",
-        provinces: [],
-        offset: startRow,
-        limit: pageSize,
-      })
-        .then((res: ISearchProjectData) => {
-          setData(res.rows);
-          setPageCount(Math.ceil(res.total / pageSize));
+        getProjectData({
+          token: keycloak.token,
+          ...filter,
+          offset: startRow,
+          limit: pageSize,
         })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, []);
+          .then((res: ISearchProjectData) => {
+            dispatch({
+              type: SET_RESULTS,
+              payload: {
+                rows: res.rows,
+                pageCount: Math.ceil(res.total / pageSize),
+              },
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            dispatch({ type: SET_LOADING, payload: false });
+          });
+      }
+    },
+    [filter]
+  );
 
   return (
     <React.Fragment>
+      <FilterDrawer />
       <Toolbar
         sx={{
           display: "flex",
@@ -103,7 +110,7 @@ const Project = () => {
         <Typography variant="button">Progetti</Typography>
         <div>
           <Tooltip title="Filtri">
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
               <FilterList />
             </IconButton>
           </Tooltip>
@@ -117,7 +124,7 @@ const Project = () => {
       <Container maxWidth={false} sx={{ py: 2 }}>
         <ControlledTable
           columns={columns}
-          data={data}
+          data={rows}
           fetchData={fetchData}
           loading={loading}
           pageCount={pageCount}

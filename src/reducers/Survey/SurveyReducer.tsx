@@ -42,7 +42,6 @@ export const SurveyReducer = (
       return { ...state, questions: newQuestions, toDelete: null };
     }
     case DUPLICATE: {
-      console.log(action.payload);
       return { ...state, questions: [...state.questions, action.payload] };
     }
     case SET_TO_UPDATE:

@@ -8,6 +8,7 @@ import Dashboard from "@pages/Dashboard";
 import UpdateSurvey from "@pages/Survey/UpdateSurvey";
 import Project from "@pages/Project";
 import SurveyDataDashboard from "@pages/Survey/SurveyDataDashboard";
+import { ProjectProvider } from "@contexts/ProjectContext";
 
 const Routing = () => {
   const { roles } = useApplicationContext();
@@ -44,7 +45,14 @@ const Routing = () => {
 
       {roles.includes("project") && (
         <React.Fragment>
-          <Route path="/projects" element={<Project />} />
+          <Route
+            path="/projects"
+            element={
+              <ProjectProvider>
+                <Project />
+              </ProjectProvider>
+            }
+          />
         </React.Fragment>
       )}
     </Routes>
