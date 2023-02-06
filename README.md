@@ -1,3 +1,3 @@
 # survey-app
 
-Survey React application
+Survey application
