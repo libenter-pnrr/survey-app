@@ -23,11 +23,13 @@ import { Close } from "@mui/icons-material";
 import useGetRegions from "@hooks/Regions/useGetRegions";
 import { IProjectFilter } from "@reducers/Project/ProjectReducer";
 import useGetProvinces from "@hooks/Province/useGetProvinces";
+import useGetProjectType from "@hooks/Project/useGetProjectTypes";
 
 const FilterDrawer = () => {
   const { openFilter, dispatch } = useProjectContext();
   const { loading: loadingRegion, regions } = useGetRegions();
   const { loading: loadingProvince, provinces } = useGetProvinces();
+  const { loading: loadingPt, projectTypes } = useGetProjectType();
 
   const [filter, setFilter] = React.useState<IProjectFilter>({
     customer: "",
@@ -35,13 +37,13 @@ const FilterDrawer = () => {
     regions: [],
     search: "",
     provinces: [],
+    projectTypes: [],
   });
 
   const handleChangeRegion = (event: SelectChangeEvent) => {
     const {
       target: { value },
     } = event;
-    console.log(value);
     setFilter({
       ...filter,
       regions: typeof value === "string" ? value.split(",") : value,
@@ -52,10 +54,19 @@ const FilterDrawer = () => {
     const {
       target: { value },
     } = event;
-    console.log(value);
     setFilter({
       ...filter,
       provinces: typeof value === "string" ? value.split(",") : value,
+    });
+  };
+
+  const handleChangeProjectTypes = (event: SelectChangeEvent) => {
+    const {
+      target: { value },
+    } = event;
+    setFilter({
+      ...filter,
+      projectTypes: typeof value === "string" ? value.split(",") : value,
     });
   };
 
@@ -65,7 +76,7 @@ const FilterDrawer = () => {
       open={openFilter}
       onClose={() => dispatch({ type: CLOSE_FILTER })}
     >
-      <Box sx={{ width: 400 }}>
+      <Box sx={{ width: 400, height: "100%" }}>
         <Toolbar
           sx={{
             display: "flex",
@@ -80,7 +91,15 @@ const FilterDrawer = () => {
             <Close />
           </IconButton>
         </Toolbar>
-        <Box sx={{ p: 2 }}>
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "calc(100% - 64px)",
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl fullWidth>
@@ -146,7 +165,7 @@ const FilterDrawer = () => {
                   fullWidth
                   labelId="provinces-chip-label"
                   id="provinces-chip"
-                  multiple
+                  multiple={true}
                   value={filter.provinces || []}
                   onChange={handleChangeProvinces}
                   input={
@@ -181,7 +200,46 @@ const FilterDrawer = () => {
                 </Select>
               </FormControl>
             </Grid>
-
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Tipologia Progetto</InputLabel>
+                <Select
+                  MenuProps={{ style: { maxHeight: 300 } }}
+                  fullWidth
+                  labelId="project-types-chip-label"
+                  id="project-types-chip"
+                  multiple={true}
+                  value={filter.projectTypes || []}
+                  onChange={handleChangeProjectTypes}
+                  input={
+                    <OutlinedInput
+                      id="project-types-select-chip"
+                      label="Tipologia Progetto"
+                    />
+                  }
+                  renderValue={(selected) => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map((value) => {
+                        const projectType = projectTypes.find(
+                          (r) => r.code === value
+                        );
+                        return (
+                          <Chip key={value} label={projectType.description} />
+                        );
+                      })}
+                    </Box>
+                  )}
+                >
+                  {projectTypes.map(({ code, description }) => (
+                    <MenuItem key={code} value={code}>
+                      {description}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <Button
                 fullWidth
@@ -192,6 +250,7 @@ const FilterDrawer = () => {
                     regions: [],
                     search: "",
                     provinces: [],
+                    projectTypes: [],
                   })
                 }
               >

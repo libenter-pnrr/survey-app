@@ -15,6 +15,7 @@ const ProjectContext = React.createContext<IProjectContext>({
     regions: [],
     search: "",
     provinces: [],
+    projectTypes: [],
   },
   rows: [],
   pageCount: 0,

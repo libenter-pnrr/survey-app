@@ -6,6 +6,7 @@ export default interface ISearchProjectDataRequest extends IRequest {
   regions?: string[];
   search?: string;
   provinces?: string[];
+  projectTypes?: string[];
   offset: number;
   limit: number;
 }

@@ -14,6 +14,7 @@ export interface IProjectFilter {
   regions?: string[];
   search?: string;
   provinces?: string[];
+  projectTypes?: string[];
 }
 
 export interface IProjectReducerState {
