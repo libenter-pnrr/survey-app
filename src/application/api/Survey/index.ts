@@ -5,6 +5,7 @@ import {
   IGetSurveyResponse,
   IUpdateSurveyPayload,
 } from "@application/models/Survey/ICreateSurveyPayload";
+import { Survey } from "@application/models/Survey/Survey";
 import { http } from "../http";
 
 const createSurvey = async (payload: ICreateSurveyPayload): Promise<null> => {
@@ -25,13 +26,13 @@ const updateSurvey = async (payload: IUpdateSurveyPayload): Promise<null> => {
   });
 };
 
-const getSurveys = async (token: string): Promise<IGetSurveysResponse> => {
-  const { data } = await http.get(`/survey`, {
+const getSurveys = async (token: string): Promise<Survey[]> => {
+  const { data }: IGetSurveysResponse = await http.get(`/survey`, {
     headers: {
       authorization: `Bearer ${token}`,
     },
   });
-  return data;
+  return data as Survey[];
 };
 
 const getSurveyById = async (
