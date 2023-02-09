@@ -1,7 +1,13 @@
+import IGetProjectInfoRequest from "@application/models/Project/IGetProjectInfoRequest";
+import {
+  IGetProjectInfoResponse,
+  ProjectDataDetails,
+} from "@application/models/Project/IGetProjectInfoResponse";
 import IProjectTypeResponse from "@application/models/Project/IProjectTypeResponse";
 import ISearchProjectDataRequest from "@application/models/Project/ISearchProjectDataRequest";
 import ISearchProjectDataResponse, {
   ISearchProjectData,
+  ProjectData,
 } from "@application/models/Project/ISearchProjectDataResponse";
 import { ProjectType } from "@application/models/Project/ProjectType";
 import { http } from "../http";
@@ -47,4 +53,16 @@ export const getProjectTypes = async ({
     },
   });
   return data as ProjectType[];
+};
+
+export const getProjectInfo = async ({
+  token,
+  id,
+}: IGetProjectInfoRequest): Promise<ProjectDataDetails> => {
+  const { data }: IGetProjectInfoResponse = await http.get(`/cup/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return data as ProjectDataDetails;
 };

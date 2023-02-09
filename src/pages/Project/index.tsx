@@ -20,13 +20,43 @@ import {
   SET_RESULTS,
 } from "@reducers/Project/actions";
 import FilterDrawer from "./FilterDrawer";
+import { MenuIcon } from "@application/components/MenuIcon";
+import ProjectDetailModal from "@application/components/Project/ProjectDetailModal";
 
 const Project = () => {
+  const { keycloak } = useKeycloak();
+  const { loading, rows, pageCount, filter, dispatch } = useProjectContext();
+  const [openDetails, setOpenDetails] = React.useState(false);
+  const [selectedProject, setSelectedProject] = React.useState(null);
+
   const columns = React.useMemo(
     () => [
       {
+        Header: " ",
+        accessor: "id",
+        width: 50,
+        Cell: ({ value }) => (
+          <MenuIcon
+            options={[
+              {
+                label: "Dettagli",
+                onClick: () => {
+                  setSelectedProject(value);
+                  setOpenDetails(true);
+                },
+              },
+              {
+                label: "Aggiungi questionario",
+                onClick: () => console.log("Aggiungi questionario ", value),
+              },
+            ]}
+          />
+        ),
+      },
+      {
         Header: "Codice",
         accessor: "code",
+        Cell: ({ value }) => <strong>{value}</strong>,
       },
       {
         Header: "Tipologia",
@@ -56,8 +86,6 @@ const Project = () => {
     ],
     []
   );
-  const { keycloak } = useKeycloak();
-  const { loading, rows, pageCount, filter, dispatch } = useProjectContext();
 
   const fetchIdRef = React.useRef(0);
 
@@ -97,6 +125,11 @@ const Project = () => {
 
   return (
     <React.Fragment>
+      <ProjectDetailModal
+        open={openDetails}
+        onClose={() => setOpenDetails(false)}
+        project={selectedProject}
+      />
       <FilterDrawer />
       <Toolbar
         sx={{
