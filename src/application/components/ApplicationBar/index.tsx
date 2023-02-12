@@ -17,6 +17,7 @@ import { useApplicationContext } from "@contexts/ApplicationProvider";
 import { getMenu } from "@common/Menu";
 import { Link, useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+import Logo from "@assets/img/libenter.png";
 
 const ApplicationBar = () => {
   const navigate = useNavigate();
@@ -52,24 +53,7 @@ const ApplicationBar = () => {
     <AppBar position="static" color="primary" elevation={0}>
       <Container maxWidth={false}>
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component={Link}
-            to="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography>
+          <img src={Logo} alt="Survey App" height="50" />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton

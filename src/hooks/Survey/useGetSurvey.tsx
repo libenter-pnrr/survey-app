@@ -9,6 +9,11 @@ export const useGetSurvey = (id: string) => {
   const [survey, setSurvey] = useState<IGetSurveyResponse | null>(null);
 
   useEffect(() => {
+    if (!id) {
+      setSurvey(null);
+      return;
+    }
+
     getSurvey();
   }, [id, keycloak.token]);
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { FormElementProps } from "../../models/Survey/types";
 import FormListItem from "@application/components/FormListItem";
 import { formElements } from "../../../pages/Survey/data/components";
+import { FormElementProps } from "@application/models/Survey/FormElementProps";
 
 const Sidebar = () => {
   return (
@@ -12,6 +12,7 @@ const Sidebar = () => {
         flex: "0 0 auto",
         width: "300px",
         padding: 2,
+        backgroundColor: (theme) => theme.palette.background.paper,
         borderRight: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >

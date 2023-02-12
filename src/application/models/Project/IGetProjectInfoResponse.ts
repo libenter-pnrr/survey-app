@@ -11,11 +11,10 @@ export type ProjectDataDetails = {
   templateDescription?: string;
   state?: string;
   provinceName?: string;
+  regionName?: string;
   provinceAcronym?: string;
   istat?: string;
   town?: string;
-  telephonePrefix?: string;
-  zipCode?: string;
   fiscalCode?: string;
   description?: string;
   sectorName?: string;

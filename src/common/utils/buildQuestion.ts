@@ -9,14 +9,15 @@ const buildQuestion = (survey: IGetSurveyResponse): FormElementProps[] => {
     const questionProps = formElements.find(
       (element) => element.type === id.split("__")[1]
     );
-    Object.assign(questionProps, {
+    const obj = Object.assign({
+      ...questionProps,
       id,
       schema: question,
       required: survey?.schema?.required?.includes(id),
       uiSchema: survey?.uiSchema?.[id] || {},
     });
 
-    questions.push(questionProps);
+    questions.push(obj);
   }
   return questions;
 };

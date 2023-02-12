@@ -22,8 +22,10 @@ import {
 import FilterDrawer from "./FilterDrawer";
 import { MenuIcon } from "@application/components/MenuIcon";
 import ProjectDetailModal from "@application/components/Project/ProjectDetailModal";
+import { useNavigate } from "react-router-dom";
 
 const Project = () => {
+  const navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const { loading, rows, pageCount, filter, dispatch } = useProjectContext();
   const [openDetails, setOpenDetails] = React.useState(false);
@@ -47,7 +49,7 @@ const Project = () => {
               },
               {
                 label: "Aggiungi questionario",
-                onClick: () => console.log("Aggiungi questionario ", value),
+                onClick: () => navigate(`/survey/${value}`),
               },
             ]}
           />

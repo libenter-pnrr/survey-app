@@ -21,6 +21,7 @@ module.exports = (env) => {
         "@common": path.join(__dirname, "src/common"),
         "@utils": path.join(__dirname, "src/utils"),
         "@reducers": path.join(__dirname, "src/reducers"),
+        "@assets": path.join(__dirname, "src/assets"),
       },
       extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
     },

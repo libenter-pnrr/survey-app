@@ -1,5 +1,4 @@
 import React from "react";
-import useProjectContext from "@contexts/ProjectContext";
 import {
   Box,
   Button,
@@ -21,17 +20,18 @@ import {
 import { CLOSE_FILTER, SET_FILTER } from "@reducers/Project/actions";
 import { Close } from "@mui/icons-material";
 import useGetRegions from "@hooks/Regions/useGetRegions";
-import { IProjectFilter } from "@reducers/Project/ProjectReducer";
 import useGetProvinces from "@hooks/Province/useGetProvinces";
 import useGetProjectType from "@hooks/Project/useGetProjectTypes";
+import useSuveryDataContext from "@contexts/SurveyDataDashboardProvider";
+import { ISurveyDataFilter } from "@reducers/Survey/SurveyDataReducer";
 
 const FilterDrawer = () => {
-  const { openFilter, dispatch } = useProjectContext();
+  const { openFilter, dispatch } = useSuveryDataContext();
   const { regions } = useGetRegions();
   const { provinces } = useGetProvinces();
   const { projectTypes } = useGetProjectType();
 
-  const [filter, setFilter] = React.useState<IProjectFilter>({
+  const [filter, setFilter] = React.useState<ISurveyDataFilter>({
     customer: "",
     cup: "",
     regions: [],

@@ -7,6 +7,8 @@ interface IApplicationProvider {
   changeTheme?: (theme: string) => void;
   roles?: string[];
   name?: string;
+  gloabalLoader?: boolean;
+  setGlobalLoader?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type ApplicationProviderProps = {
@@ -29,6 +31,8 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
   );
   const [roles, setRoles] = React.useState<string[]>([]);
   const [name, setName] = React.useState<string>("");
+  const [gloabalLoader, setGlobalLoader] = React.useState<boolean>(false);
+
   const {
     keycloak: { tokenParsed },
   } = useKeycloak();
@@ -46,6 +50,8 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
     changeTheme: (theme: string) => changeTheme(theme, setTheme),
     roles,
     name,
+    gloabalLoader,
+    setGlobalLoader,
   };
 
   return (

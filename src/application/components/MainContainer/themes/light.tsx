@@ -13,5 +13,8 @@ export const lightTheme: ThemeOptions = {
       light: "#ffff55",
       dark: "#c7ac00",
     },
+    background: {
+      default: "#f5f5f5",
+    },
   },
 };

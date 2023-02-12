@@ -1,13 +1,9 @@
 import React from "react";
 import { getSurveyData } from "@application/api/SurveyData";
-import {
-  ISearchSurveyData,
-  SurveyData,
-} from "@application/models/SurveyData/ISearchSurveyDataResponse";
+import { ISearchSurveyData } from "@application/models/SurveyData/ISearchSurveyDataResponse";
 import { useKeycloak } from "@react-keycloak/web";
 import ControlledTable from "@application/components/Table/ControlledTable";
 import {
-  Button,
   Container,
   IconButton,
   Toolbar,
@@ -15,6 +11,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Add, FilterList } from "@mui/icons-material";
+import {
+  OPEN_FILTER,
+  SET_LOADING,
+  SET_RESULTS,
+} from "@reducers/Survey/actions";
+import useSuveryDataContext from "@contexts/SurveyDataDashboardProvider";
+import FilterDrawer from "./FilterDrawer";
 
 const SurveyDataDashboard = () => {
   const columns = React.useMemo(
@@ -63,44 +66,47 @@ const SurveyDataDashboard = () => {
     []
   );
   const { keycloak } = useKeycloak();
-
+  const { loading, rows, pageCount, filter, dispatch } = useSuveryDataContext();
   // We'll start our table without any data
-  const [data, setData] = React.useState<SurveyData[]>([]);
-  const [loading, setLoading] = React.useState(false);
-  const [pageCount, setPageCount] = React.useState(0);
   const fetchIdRef = React.useRef(0);
 
-  const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
-    const fetchId = ++fetchIdRef.current;
+  const fetchData = React.useCallback(
+    ({ pageSize, pageIndex }) => {
+      const fetchId = ++fetchIdRef.current;
 
-    setLoading(true);
-    if (fetchId === fetchIdRef.current) {
-      const startRow = pageSize * pageIndex;
-      const endRow = startRow + pageSize;
+      if (fetchId === fetchIdRef.current) {
+        const startRow = pageSize * pageIndex;
 
-      getSurveyData({
-        token: keycloak.token,
-        regions: [],
-        search: "",
-        provinces: [],
-        offset: startRow,
-        limit: endRow,
-      })
-        .then((res: ISearchSurveyData) => {
-          setData(res.rows);
-          setPageCount(Math.ceil(res.total / pageSize));
+        dispatch({ type: SET_LOADING, payload: true });
+        getSurveyData({
+          token: keycloak.token,
+          ...filter,
+          offset: startRow,
+          limit: pageSize,
         })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, []);
+          .then((res: ISearchSurveyData) => {
+            dispatch({
+              type: SET_RESULTS,
+              payload: {
+                rows: res.rows,
+                pageCount: Math.ceil(res.total / pageSize),
+              },
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            dispatch({ type: SET_LOADING, payload: false });
+          });
+      }
+    },
+    [filter]
+  );
 
   return (
     <React.Fragment>
+      <FilterDrawer />
       <Toolbar
         sx={{
           display: "flex",
@@ -113,7 +119,7 @@ const SurveyDataDashboard = () => {
         <Typography variant="button">Questionari</Typography>
         <div>
           <Tooltip title="Filtri">
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
               <FilterList />
             </IconButton>
           </Tooltip>
@@ -127,7 +133,7 @@ const SurveyDataDashboard = () => {
       <Container maxWidth={false} sx={{ py: 2 }}>
         <ControlledTable
           columns={columns}
-          data={data}
+          data={rows}
           fetchData={fetchData}
           loading={loading}
           pageCount={pageCount}

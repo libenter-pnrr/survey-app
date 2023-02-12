@@ -13,6 +13,7 @@ const SurveyToolbar = () => {
         alignItems: "center",
         justifyContent: "space-between",
         px: [1],
+        backgroundColor: (theme) => theme.palette.background.paper,
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >

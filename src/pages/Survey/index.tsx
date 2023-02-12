@@ -42,7 +42,7 @@ const SurveyDashboard = () => {
             options={[
               {
                 label: "Configura",
-                onClick: () => navigate(`/survey/${original.id}/edit`),
+                onClick: () => navigate(`/wizard/${original.id}/edit`),
               },
               {
                 label: "Elimina",
@@ -126,7 +126,7 @@ const SurveyDashboard = () => {
         }}
       >
         <Typography variant="button">Questionari</Typography>
-        <Button onClick={() => navigate("/survey/create")}>
+        <Button onClick={() => navigate("/wizard/create")}>
           Crea <Add sx={{ ml: 1 }} />
         </Button>
       </Toolbar>

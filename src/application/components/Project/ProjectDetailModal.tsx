@@ -120,17 +120,11 @@ const ProjectDetailModal = ({ open, onClose, project }) => {
                 {projectInfo.provinceAcronym}
               </Typography>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={9}>
               <Typography variant="button">
                 <strong>Comune</strong>
               </Typography>
               <Typography variant="body1">{projectInfo.town}</Typography>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <Typography variant="button">
-                <strong>C.A.P.</strong>
-              </Typography>
-              <Typography variant="body1">{projectInfo.zipCode}</Typography>
             </Grid>
             <Grid item xs={12} md={3}>
               <Typography variant="button">

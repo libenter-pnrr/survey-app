@@ -148,7 +148,9 @@ const SurveyBuilder = () => {
                                               payload: Object.assign(
                                                 { ...element },
                                                 {
-                                                  id: uuid(),
+                                                  id: `${uuid()}__${
+                                                    element.id.split("__")[1]
+                                                  }`,
                                                 }
                                               ),
                                             })

@@ -58,6 +58,7 @@
     "cypress": "^12.2.0",
     "cypress-keycloak-commands": "^1.2.0",
     "dotenv-webpack": "^8.0.1",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "postcss-loader": "^7.0.2",
     "prettier": "^2.8.1",

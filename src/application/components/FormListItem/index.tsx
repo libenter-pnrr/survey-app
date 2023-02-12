@@ -12,7 +12,6 @@ export interface FormListItemProps {
 const FormListItem = ({ element, provided, snapshot }: FormListItemProps) => {
   const Icon = element.icon || null;
 
-  console.log(snapshot.isDragging);
   return (
     <ListItem
       ref={provided.innerRef}
