@@ -7,6 +7,7 @@ interface IApplicationProvider {
   changeTheme?: (theme: string) => void;
   roles?: string[];
   name?: string;
+  username?: string;
   gloabalLoader?: boolean;
   setGlobalLoader?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -31,6 +32,7 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
   );
   const [roles, setRoles] = React.useState<string[]>([]);
   const [name, setName] = React.useState<string>("");
+  const [username, setUsername] = React.useState<string>("");
   const [gloabalLoader, setGlobalLoader] = React.useState<boolean>(false);
 
   const {
@@ -42,6 +44,7 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
       const clientRoles = tokenParsed.resource_access[CLIENT].roles;
       setRoles(clientRoles);
       setName(tokenParsed.name);
+      setUsername(tokenParsed.preferred_username);
     }
   }, [tokenParsed]);
 
@@ -50,6 +53,7 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
     changeTheme: (theme: string) => changeTheme(theme, setTheme),
     roles,
     name,
+    username,
     gloabalLoader,
     setGlobalLoader,
   };

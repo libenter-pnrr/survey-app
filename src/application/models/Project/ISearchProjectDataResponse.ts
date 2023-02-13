@@ -20,6 +20,7 @@ export type ProjectData = {
   type_code?: string;
   type_description?: string;
   state_name?: string;
+  survey_count?: number;
 };
 
 export interface ISearchProjectData {

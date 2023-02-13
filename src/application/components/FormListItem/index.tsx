@@ -1,7 +1,7 @@
 import React from "react";
 import { alpha, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
-import { FormElementProps } from "@application/models/Survey/types";
+import { FormElementProps } from "@application/models/Survey/FormElementProps";
 
 export interface FormListItemProps {
   element: FormElementProps;

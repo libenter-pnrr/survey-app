@@ -3,6 +3,7 @@ import React from "react";
 import { useKeycloak } from "@react-keycloak/web";
 import ControlledTable from "@application/components/Table/ControlledTable";
 import {
+  Chip,
   Container,
   IconButton,
   Toolbar,
@@ -59,6 +60,11 @@ const Project = () => {
         Header: "Codice",
         accessor: "code",
         Cell: ({ value }) => <strong>{value}</strong>,
+      },
+      {
+        Header: "",
+        accessor: "survey_count",
+        Cell: ({ value }) => <Chip label={value} color="primary" />,
       },
       {
         Header: "Tipologia",
@@ -139,6 +145,7 @@ const Project = () => {
           alignItems: "center",
           justifyContent: "space-between",
           px: [1],
+          backgroundColor: (theme) => theme.palette.background.paper,
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >

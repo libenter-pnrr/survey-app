@@ -3,6 +3,10 @@ import ISearchSurveyDataRequest from "@application/models/SurveyData/ISearchSurv
 import ISearchSurveyDataResponse, {
   ISearchSurveyData,
 } from "@application/models/SurveyData/ISearchSurveyDataResponse";
+import {
+  IGetSurveyDataResponse,
+  SurveyDataById,
+} from "@application/models/SurveyData/SurveyData";
 import { http } from "../http";
 
 export const getSurveyData = async ({
@@ -61,4 +65,20 @@ export const saveSurveyData = async ({
       },
     }
   );
+};
+
+export const getSurveyDataById = async ({
+  token,
+  id,
+}): Promise<SurveyDataById> => {
+  const response: IGetSurveyDataResponse = await http.get(
+    `/survey-data/${id}`,
+    {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data as SurveyDataById;
 };

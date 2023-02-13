@@ -18,10 +18,49 @@ import {
 } from "@reducers/Survey/actions";
 import useSuveryDataContext from "@contexts/SurveyDataDashboardProvider";
 import FilterDrawer from "./FilterDrawer";
+import { MenuIcon } from "@application/components/MenuIcon";
+import { useNavigate } from "react-router-dom";
+import { useApplicationContext } from "@contexts/ApplicationProvider";
 
 const SurveyDataDashboard = () => {
+  const navigate = useNavigate();
+  const { keycloak } = useKeycloak();
+  const { loading, rows, pageCount, filter, dispatch } = useSuveryDataContext();
+  const { username } = useApplicationContext();
+  // We'll start our table without any data
+  const fetchIdRef = React.useRef(0);
+
   const columns = React.useMemo(
     () => [
+      {
+        Header: " ",
+        accessor: "id",
+        Cell: ({ value, row }) => {
+          return (
+            <MenuIcon
+              options={[
+                {
+                  label:
+                    row.values.created_by === username
+                      ? "Modifica"
+                      : "Dettagli",
+                  onClick: () => {
+                    if (row.values.created_by === username) {
+                      navigate(`/survey/${value}/update`);
+                    } else {
+                      navigate(`/survey-data/${value}/details`);
+                    }
+                  },
+                },
+                {
+                  label: "Elimina",
+                  onClick: () => console.log("elimina"),
+                },
+              ]}
+            />
+          );
+        },
+      },
       {
         Header: "Codice Cup",
         accessor: "cup_code",
@@ -65,10 +104,6 @@ const SurveyDataDashboard = () => {
     ],
     []
   );
-  const { keycloak } = useKeycloak();
-  const { loading, rows, pageCount, filter, dispatch } = useSuveryDataContext();
-  // We'll start our table without any data
-  const fetchIdRef = React.useRef(0);
 
   const fetchData = React.useCallback(
     ({ pageSize, pageIndex }) => {

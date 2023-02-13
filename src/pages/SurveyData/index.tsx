@@ -22,7 +22,6 @@ import FullScreenLoader from "@application/components/FullScreenLoader";
 import { useKeycloak } from "@react-keycloak/web";
 
 function transformErrors(errors) {
-  console.log(errors);
   return errors.map((error) => {
     if (error.name === "required") {
       error.message = "La risposta a questa domanda è obbligatoria";
