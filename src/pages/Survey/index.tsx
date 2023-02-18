@@ -10,6 +10,8 @@ import {
   DialogContentText,
   Box,
   DialogActions,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import FullScreenLoader from "@application/components/FullScreenLoader";
 import { MenuIcon } from "@application/components/MenuIcon";
@@ -62,6 +64,9 @@ const SurveyDashboard = () => {
       {
         Header: "Data di creazione",
         accessor: "creation_date",
+        Cell: ({ value }) => {
+          return new Date(value).toLocaleDateString();
+        },
       },
       {
         Header: "Descrizione",
@@ -121,17 +126,21 @@ const SurveyDashboard = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          px: [1],
+          padding: (theme) => theme.spacing(1, 2),
           backgroundColor: (theme) => theme.palette.background.paper,
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Typography variant="button">Questionari</Typography>
-        <Button onClick={() => navigate("/wizard/create")}>
-          Crea <Add sx={{ ml: 1 }} />
-        </Button>
+        <Typography variant="button">
+          Wizard di creazione questionari
+        </Typography>
+        <Tooltip title="Aggiungi Questionario">
+          <IconButton onClick={() => navigate("/wizard/create")}>
+            <Add sx={{ ml: 1 }} />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
-      <Container sx={{ py: 2 }}>
+      <Container maxWidth={false} sx={{ py: 2 }}>
         {isLoading && <FullScreenLoader />}
         {!isLoading && surveys && <Table columns={columns} data={surveys} />}
       </Container>

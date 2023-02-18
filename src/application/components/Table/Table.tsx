@@ -31,7 +31,7 @@ const Table = <T extends object>(props: ITable<T>) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
     prepareRow,
     setGlobalFilter,
     preGlobalFilteredRows,
@@ -54,7 +54,6 @@ const Table = <T extends object>(props: ITable<T>) => {
       },
       initialState: {
         pageIndex: 0,
-        pageSize: 5,
       },
     },
     useFilters,
@@ -71,7 +70,7 @@ const Table = <T extends object>(props: ITable<T>) => {
       />
 
       <TableContainer component={Paper}>
-        <MUITable data-testid="table" {...getTableProps()}>
+        <MUITable size="small" data-testid="table" {...getTableProps()}>
           <TableHead>
             {headerGroups.map((headerGroup) => (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
@@ -94,7 +93,7 @@ const Table = <T extends object>(props: ITable<T>) => {
             ))}
           </TableHead>
           <TableBody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {page.map((row) => {
               prepareRow(row);
               return (
                 <TableRow {...row.getRowProps()}>

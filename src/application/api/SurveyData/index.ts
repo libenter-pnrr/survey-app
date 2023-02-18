@@ -1,3 +1,7 @@
+import ISaveSurveyDataResponse, {
+  SaveSurveyDataResponse,
+} from "@application/models/Project/IGetProjectInfoResponse";
+import { IUpdateSurveyPayload } from "@application/models/Survey/ICreateSurveyPayload";
 import ICreateSurveyDataRequest from "@application/models/SurveyData/ICreateSurveyDataRequest";
 import ISearchSurveyDataRequest from "@application/models/SurveyData/ISearchSurveyDataRequest";
 import ISearchSurveyDataResponse, {
@@ -50,13 +54,33 @@ export const saveSurveyData = async ({
   uiSchema,
   data,
 }: ICreateSurveyDataRequest): Promise<null> => {
-  return await http.post(
+  const response: ISaveSurveyDataResponse = await http.post(
     "/survey-data",
     {
       surveyId,
       cupId,
       schema,
       uiSchema,
+      data,
+    },
+    {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data as SaveSurveyDataResponse;
+};
+
+export const updateSurveyData = async ({
+  token,
+  surveyId,
+  data,
+}: IUpdateSurveyPayload): Promise<null> => {
+  return await http.patch(
+    `/survey-data/${surveyId}`,
+    {
       data,
     },
     {

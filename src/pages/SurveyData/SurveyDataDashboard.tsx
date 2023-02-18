@@ -46,7 +46,7 @@ const SurveyDataDashboard = () => {
                       : "Dettagli",
                   onClick: () => {
                     if (row.values.created_by === username) {
-                      navigate(`/survey/${value}/update`);
+                      navigate(`/survey-data/${value}/update`);
                     } else {
                       navigate(`/survey-data/${value}/details`);
                     }
@@ -147,7 +147,8 @@ const SurveyDataDashboard = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          px: [1],
+          padding: (theme) => theme.spacing(1, 2),
+          backgroundColor: (theme) => theme.palette.background.paper,
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
@@ -156,11 +157,6 @@ const SurveyDataDashboard = () => {
           <Tooltip title="Filtri">
             <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
               <FilterList />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Aggiungi Questionario">
-            <IconButton onClick={() => {}}>
-              <Add />
             </IconButton>
           </Tooltip>
         </div>

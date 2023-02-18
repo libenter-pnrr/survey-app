@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSurveys } from "@hooks/Survey/useSurveys";
 import {
   Card,
@@ -20,6 +20,8 @@ import { saveSurveyData } from "@application/api/SurveyData";
 import { useApplicationContext } from "@contexts/ApplicationProvider";
 import FullScreenLoader from "@application/components/FullScreenLoader";
 import { useKeycloak } from "@react-keycloak/web";
+import ProjectInfo from "@application/components/Project/ProjectInfo";
+import { SaveSurveyDataResponse } from "@application/models/Project/IGetProjectInfoResponse";
 
 function transformErrors(errors) {
   return errors.map((error) => {
@@ -34,6 +36,7 @@ const SurveyData = () => {
   const { projectId } = useParams<{
     projectId: string;
   }>();
+  const navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const { gloabalLoader, setGlobalLoader } = useApplicationContext();
   const { isLoading, surveys } = useSurveys();
@@ -52,8 +55,8 @@ const SurveyData = () => {
 
     setGlobalLoader(true);
     saveSurveyData(request)
-      .then(() => {
-        console.log("Survey data saved");
+      .then((reponse: SaveSurveyDataResponse) => {
+        navigate(`/survey-data/${reponse.id}/update`);
       })
       .catch((e) => {
         console.log(e);
@@ -113,6 +116,7 @@ const SurveyData = () => {
           )}
         </Box>
       </Card>
+      <ProjectInfo id={projectId} />
       {loadingSurvey && (
         <Box
           sx={{
@@ -127,34 +131,36 @@ const SurveyData = () => {
         </Box>
       )}
       {!loadingSurvey && survey && (
-        <Card
-          sx={{
-            marginTop: 3,
-            marginBottom: 3,
-          }}
-        >
-          <Box
+        <React.Fragment>
+          <Card
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 2,
+              marginTop: 3,
+              marginBottom: 3,
             }}
           >
-            <Form
-              validator={validator}
-              schema={survey.schema}
-              uiSchema={Object.assign(survey.uiSchema, {
-                "ui:submitButtonOptions": {
-                  submitText: "Salva Questionario",
-                },
-              })}
-              transformErrors={transformErrors}
-              showErrorList={false}
-              onSubmit={(data) => handleSurveyData(data)}
-            />
-          </Box>
-        </Card>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 2,
+              }}
+            >
+              <Form
+                validator={validator}
+                schema={survey.schema}
+                uiSchema={Object.assign(survey.uiSchema, {
+                  "ui:submitButtonOptions": {
+                    submitText: "Salva Questionario",
+                  },
+                })}
+                transformErrors={transformErrors}
+                showErrorList={false}
+                onSubmit={(data) => handleSurveyData(data)}
+              />
+            </Box>
+          </Card>
+        </React.Fragment>
       )}
     </Container>
   );

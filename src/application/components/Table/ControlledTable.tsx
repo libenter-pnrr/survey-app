@@ -59,7 +59,7 @@ const ControlledTable = ({
         overflowX: "auto",
       }}
     >
-      <MUITable data-testid="table" {...getTableProps()}>
+      <MUITable size="small" data-testid="table" {...getTableProps()}>
         <TableHead>
           {headerGroups.map((headerGroup) => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>

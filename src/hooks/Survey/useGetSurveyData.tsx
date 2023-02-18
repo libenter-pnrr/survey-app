@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useKeycloak } from "@react-keycloak/web";
-import { getSurveyDataById } from "@application/api/SurveyData";
+import {
+  getSurveyDataById,
+  updateSurveyData,
+} from "@application/api/SurveyData";
 import { SurveyDataById } from "@application/models/SurveyData/SurveyData";
 
 export const useGetSurveyData = (id: string) => {
@@ -34,5 +37,29 @@ export const useGetSurveyData = (id: string) => {
       });
   };
 
-  return { isLoading, surveyData };
+  const saveSurveyData = (data) => {
+    const request = {
+      token: keycloak.token,
+      surveyId: id,
+      data: data.formData,
+    };
+
+    setIsLoading(true);
+    updateSurveyData(request)
+      .then(() => {
+        console.log("Survey data saved");
+        setSurveyData({
+          ...surveyData,
+          surveyData: data.formData,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  return { isLoading, surveyData, saveSurveyData };
 };

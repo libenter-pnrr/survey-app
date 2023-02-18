@@ -1,6 +1,5 @@
 import React from "react";
 import { useKeycloak } from "@react-keycloak/web";
-import { ProjectData } from "@application/models/Project/ISearchProjectDataResponse";
 import { getProjectInfo } from "@application/api/Project";
 import { ProjectDataDetails } from "@application/models/Project/IGetProjectInfoResponse";
 

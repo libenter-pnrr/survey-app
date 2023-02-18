@@ -16,8 +16,9 @@ export interface IGetSurveyPayload extends IRequest {
   id: string;
 }
 
-export interface IUpdateSurveyPayload extends ICreateSurveyPayload {
-  id: string;
+export interface IUpdateSurveyPayload extends IRequest {
+  surveyId: string;
+  data?: any;
 }
 
 export interface IGetSurveyResponse extends ICreateSurveyPayload {

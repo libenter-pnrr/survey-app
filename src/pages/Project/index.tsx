@@ -144,7 +144,7 @@ const Project = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          px: [1],
+          padding: (theme) => theme.spacing(1, 2),
           backgroundColor: (theme) => theme.palette.background.paper,
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}

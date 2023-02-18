@@ -7,7 +7,6 @@ import IProjectTypeResponse from "@application/models/Project/IProjectTypeRespon
 import ISearchProjectDataRequest from "@application/models/Project/ISearchProjectDataRequest";
 import ISearchProjectDataResponse, {
   ISearchProjectData,
-  ProjectData,
 } from "@application/models/Project/ISearchProjectDataResponse";
 import { ProjectType } from "@application/models/Project/ProjectType";
 import { http } from "../http";

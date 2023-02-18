@@ -22,7 +22,7 @@ export type ProjectDataDetails = {
   customerName?: string;
   customerCategory?: string;
   customerSubcategoryDescription?: string;
-  cateory?: string;
+  category?: string;
   generationDate?: string;
   cupCost?: number;
   cupFunded?: number;
@@ -31,3 +31,10 @@ export type ProjectDataDetails = {
 
 export interface IGetProjectInfoResponse
   extends IResponse<ProjectDataDetails> {}
+
+export type SaveSurveyDataResponse = {
+  id: string;
+};
+
+export default interface ISaveSurveyDataResponse
+  extends IResponse<SaveSurveyDataResponse> {}

@@ -1,6 +1,6 @@
+import React from "react";
 import Survey from "@pages/Survey";
 import { SurveyProvider } from "@contexts/SurveyContext";
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useApplicationContext } from "../../contexts/ApplicationProvider";
 import CreateSurvey from "@pages/Survey/CreateSurvey";
@@ -54,7 +54,7 @@ const Routing = () => {
           <Route path="/survey/:projectId" element={<SurveyData />} />
           <Route
             path="/survey-data/:surveyId/update"
-            element={<SurveyDataUpdate disabled={true} />}
+            element={<SurveyDataUpdate />}
           />
           <Route
             path="/survey-data/:surveyId/details"

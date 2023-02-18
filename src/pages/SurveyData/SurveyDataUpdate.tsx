@@ -1,23 +1,15 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import {
-  Card,
-  CircularProgress,
-  Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { Card, Container } from "@mui/material";
 import { Box } from "@mui/system";
-import { Survey } from "@application/models/Survey/Survey";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import { useApplicationContext } from "@contexts/ApplicationProvider";
 import FullScreenLoader from "@application/components/FullScreenLoader";
 import { useKeycloak } from "@react-keycloak/web";
 import { useGetSurveyData } from "@hooks/Survey/useGetSurveyData";
+import { updateSurveyData } from "@application/api/SurveyData";
+import ProjectInfo from "@application/components/Project/ProjectInfo";
 
 function transformErrors(errors) {
   return errors.map((error) => {
@@ -32,11 +24,8 @@ const SurveyDataUpdate = ({ disabled = false }: { disabled?: boolean }) => {
   const { surveyId } = useParams<{
     surveyId: string;
   }>();
-  // const { keycloak } = useKeycloak();
-  // const { gloabalLoader, setGlobalLoader } = useApplicationContext();
-  const { isLoading, surveyData } = useGetSurveyData(surveyId);
 
-  const handleSurveyData = (data) => {};
+  const { isLoading, surveyData, saveSurveyData } = useGetSurveyData(surveyId);
 
   return (
     <Container
@@ -44,6 +33,7 @@ const SurveyDataUpdate = ({ disabled = false }: { disabled?: boolean }) => {
         marginTop: 3,
       }}
     >
+      {surveyData && <ProjectInfo id={surveyData.cupId} />}
       {isLoading && <FullScreenLoader />}
       {!isLoading && surveyData && (
         <Card
@@ -72,7 +62,8 @@ const SurveyDataUpdate = ({ disabled = false }: { disabled?: boolean }) => {
               transformErrors={transformErrors}
               showErrorList={false}
               disabled={disabled}
-              onSubmit={(data) => handleSurveyData(data)}
+              onSubmit={(data) => saveSurveyData(data)}
+              children={disabled}
             />
           </Box>
         </Card>

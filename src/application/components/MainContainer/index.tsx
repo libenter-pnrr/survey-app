@@ -6,6 +6,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import ApplicationBar from "../ApplicationBar";
+import componentStyleOverrides from "./themes/compStyleOverride";
 
 interface IMainContainer {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ interface IMainContainer {
 const MainContainer = ({ children }: IMainContainer) => {
   const { theme } = useApplicationContext();
   const muiTheme = createTheme(theme === "light" ? lightTheme : darkTheme);
+  muiTheme.components = componentStyleOverrides(muiTheme);
 
   return (
     <BrowserRouter>
