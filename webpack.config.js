@@ -64,7 +64,11 @@ module.exports = (env) => {
         template: path.join(__dirname, "public", "index.html"),
       }),
       new Dotenv({
-        path: path.join(__dirname, `./.env.${env.local ? "dev" : "prod"}`),
+        path: `./environments/.env${
+          Object.keys(env)[Object.keys(env).length - 1]
+            ? `.${Object.keys(env)[Object.keys(env).length - 1]}`
+            : ""
+        }`,
       }),
     ],
   };
