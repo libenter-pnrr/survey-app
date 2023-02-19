@@ -41,8 +41,8 @@ const UpdateSurveyItemDialog = () => {
       "options",
       (item?.schema?.oneOf &&
         item?.schema?.oneOf.map((e) => ({
-          value: e.const,
-          label: e.title,
+          value: e?.const,
+          label: e?.title,
         }))) ||
         []
     );
@@ -64,7 +64,11 @@ const UpdateSurveyItemDialog = () => {
       },
     });
 
-    if (item.type === "radio" || item.type === "checkbox") {
+    if (
+      item.type === "radio" ||
+      item.type === "checkbox" ||
+      item.type === "select"
+    ) {
       item.schema.oneOf = data.options.map((e) => ({
         const: e.value,
         title: e.label,
