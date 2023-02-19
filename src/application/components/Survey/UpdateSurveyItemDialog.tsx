@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import useSurveyContext from "@contexts/SurveyContext";
 import { SET_TO_UPDATE, UPDATE } from "@reducers/Survey/actions";
 import RadioCheckboxFragmentProps from "./Fragments/RadioCheckboxFragment";
+import SelectFragment from "./Fragments/SelectFragment";
 
 const UpdateSurveyItemDialog = () => {
   const theme = useTheme();
@@ -157,6 +158,9 @@ const UpdateSurveyItemDialog = () => {
               </Grid>
               {["radio", "checkbox"].includes(surveyItem?.type) && (
                 <RadioCheckboxFragmentProps control={control} errors={errors} />
+              )}
+              {["select"].includes(surveyItem?.type) && (
+                <SelectFragment control={control} errors={errors} />
               )}
             </Grid>
           </DialogContent>
