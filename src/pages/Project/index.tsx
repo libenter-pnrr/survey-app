@@ -24,10 +24,12 @@ import FilterDrawer from "./FilterDrawer";
 import { MenuIcon } from "@application/components/MenuIcon";
 import ProjectDetailModal from "@application/components/Project/ProjectDetailModal";
 import { useNavigate } from "react-router-dom";
+import { useApplicationContext } from "@contexts/ApplicationProvider";
 
 const Project = () => {
   const navigate = useNavigate();
   const { keycloak } = useKeycloak();
+  const { notify } = useApplicationContext();
   const { loading, rows, pageCount, filter, dispatch } = useProjectContext();
   const [openDetails, setOpenDetails] = React.useState(false);
   const [selectedProject, setSelectedProject] = React.useState(null);
@@ -121,6 +123,7 @@ const Project = () => {
             });
           })
           .catch((err) => {
+            notify("Errore durante il caricamento dei dati", "error");
             console.log(err);
           })
           .finally(() => {

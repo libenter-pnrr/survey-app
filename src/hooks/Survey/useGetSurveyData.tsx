@@ -5,11 +5,13 @@ import {
   updateSurveyData,
 } from "@application/api/SurveyData";
 import { SurveyDataById } from "@application/models/SurveyData/SurveyData";
+import { useApplicationContext } from "@contexts/ApplicationProvider";
 
 export const useGetSurveyData = (id: string) => {
   const { keycloak } = useKeycloak();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [surveyData, setSurveyData] = useState<SurveyDataById | null>(null);
+  const { notify } = useApplicationContext();
 
   useEffect(() => {
     if (!id) {
@@ -47,14 +49,15 @@ export const useGetSurveyData = (id: string) => {
     setIsLoading(true);
     updateSurveyData(request)
       .then(() => {
-        console.log("Survey data saved");
         setSurveyData({
           ...surveyData,
           surveyData: data.formData,
         });
+        notify("Dati questionario salvati correttamente", "success");
       })
       .catch((e) => {
         console.log(e);
+        notify(e?.response?.data?.message, "error");
       })
       .finally(() => {
         setIsLoading(false);

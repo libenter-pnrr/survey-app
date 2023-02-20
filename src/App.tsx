@@ -3,8 +3,6 @@ import MainContainer from "./application/components/MainContainer";
 import ApplicationProvider from "./contexts/ApplicationProvider";
 import KeycloakProvider from "./contexts/KeycloakProvider";
 import Routing from "@common/Routing";
-import { ToastContainer } from "react-toastify";
-import toastContainerConfig from "@common/config/toastContainerConfig";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
@@ -14,7 +12,6 @@ export default function App() {
         <MainContainer>
           <Routing />
         </MainContainer>
-        <ToastContainer {...toastContainerConfig} />
       </ApplicationProvider>
     </KeycloakProvider>
   );

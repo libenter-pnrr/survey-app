@@ -21,9 +21,11 @@ import { useSurveys } from "@hooks/Survey/useSurveys";
 import { Add, Warning } from "@mui/icons-material";
 import { useKeycloak } from "@react-keycloak/web";
 import { deleteSurvey } from "@application/api/Survey";
+import { useApplicationContext } from "@contexts/ApplicationProvider";
 
 const SurveyDashboard = () => {
   const { surveys, isLoading, loadSurveys } = useSurveys();
+  const { notify } = useApplicationContext();
   const [toDelete, setToDelete] = React.useState<{ id: string; title: string }>(
     { id: "", title: "" }
   );
@@ -82,10 +84,12 @@ const SurveyDashboard = () => {
       token: keycloak.token,
     })
       .then(() => {
+        notify("Questionario eliminato con successo", "success");
         handleCloseDelete();
         loadSurveys();
       })
       .catch((err) => {
+        notify("Errore durante l'eliminazione del questionario", "error");
         console.error(err);
       });
   };

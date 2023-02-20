@@ -7,6 +7,8 @@ import { CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import ApplicationBar from "../ApplicationBar";
 import componentStyleOverrides from "./themes/compStyleOverride";
+import { ToastContainer } from "react-toastify";
+import toastContainerConfig from "@common/config/toastContainerConfig";
 
 interface IMainContainer {
   children: React.ReactNode;
@@ -24,6 +26,7 @@ const MainContainer = ({ children }: IMainContainer) => {
         <ApplicationBar />
 
         {children}
+        <ToastContainer {...toastContainerConfig} />
       </ThemeProvider>
     </BrowserRouter>
   );

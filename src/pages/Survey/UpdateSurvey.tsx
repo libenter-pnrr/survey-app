@@ -20,6 +20,7 @@ import {
 } from "@reducers/Survey/actions";
 import { updateSurvey } from "@application/api/Survey";
 import { useKeycloak } from "@react-keycloak/web";
+import { useApplicationContext } from "@contexts/ApplicationProvider";
 
 const UpdateSurvey = () => {
   const { questions, display, dispatch, title, description } =
@@ -27,6 +28,7 @@ const UpdateSurvey = () => {
   const { id } = useParams<{ id: string }>();
   const { isLoading, survey } = useGetSurvey(id);
   const { keycloak } = useKeycloak();
+  const { setGlobalLoader, notify } = useApplicationContext();
 
   React.useEffect(() => {
     if (!isLoading && survey) {
@@ -47,14 +49,22 @@ const UpdateSurvey = () => {
 
   const handleUpdateSurvey = async () => {
     const { schema, uiSchema } = buildFormSchema(title, description, questions);
-    await updateSurvey({
-      id: survey.id,
-      token: keycloak.token,
-      title,
-      description,
-      schema,
-      uiSchema,
-    });
+    try {
+      setGlobalLoader(true);
+      await updateSurvey({
+        id: survey.id,
+        token: keycloak.token,
+        title,
+        description,
+        schema,
+        uiSchema,
+      });
+      notify("Questionario aggiornato correttamente", "success");
+    } catch (e) {
+      notify(e.response.data.message, "error");
+    } finally {
+      setGlobalLoader(false);
+    }
   };
 
   return (

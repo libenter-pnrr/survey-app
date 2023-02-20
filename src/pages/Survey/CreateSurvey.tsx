@@ -11,22 +11,33 @@ import buildFormSchema from "@common/utils/buildFormSchema";
 import { onDragEnd } from "@common/utils/drag";
 import { createSurvey } from "@application/api/Survey";
 import { useKeycloak } from "@react-keycloak/web";
+import { useApplicationContext } from "@contexts/ApplicationProvider";
 
 const CreateSurvey = () => {
   const { questions, display, dispatch, title, description } =
     useSurveyContext();
   const { keycloak } = useKeycloak();
+  const { setGlobalLoader, notify } = useApplicationContext();
 
   const handleCreateSurvey = async () => {
     const { schema, uiSchema } = buildFormSchema(title, description, questions);
 
-    await createSurvey({
-      token: keycloak.token,
-      title,
-      description,
-      schema,
-      uiSchema,
-    });
+    try {
+      setGlobalLoader(true);
+      await createSurvey({
+        token: keycloak.token,
+        title,
+        description,
+        schema,
+        uiSchema,
+      });
+      notify("Questionario creato correttamente", "success");
+    } catch (e) {
+      console.log(e);
+      notify(e?.response?.data?.message, "error");
+    } finally {
+      setGlobalLoader(false);
+    }
   };
 
   return (

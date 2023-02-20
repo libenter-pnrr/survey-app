@@ -12,11 +12,15 @@ export interface ICreateSurveyPayload extends IRequest {
   questions?: FormElementProps[];
 }
 
+export interface IUpdateSurveyPayload extends ICreateSurveyPayload {
+  id: string;
+}
+
 export interface IGetSurveyPayload extends IRequest {
   id: string;
 }
 
-export interface IUpdateSurveyPayload extends IRequest {
+export interface IUpdateSurveyDataPayload extends IRequest {
   surveyId: string;
   data?: any;
 }

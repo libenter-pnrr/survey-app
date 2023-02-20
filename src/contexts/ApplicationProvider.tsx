@@ -1,5 +1,6 @@
 import { useKeycloak } from "@react-keycloak/web";
 import React, { useEffect } from "react";
+import { toast, ToastContent, TypeOptions } from "react-toastify";
 const CLIENT = process.env.REACT_APP_KC_CLIENTID;
 
 interface IApplicationProvider {
@@ -10,11 +11,19 @@ interface IApplicationProvider {
   username?: string;
   gloabalLoader?: boolean;
   setGlobalLoader?: React.Dispatch<React.SetStateAction<boolean>>;
+  notify?: (message: string, type: NotificationTypes) => void;
 }
 
 type ApplicationProviderProps = {
   children: React.ReactNode;
 };
+
+export type NotificationTypes =
+  | "info"
+  | "success"
+  | "warning"
+  | "error"
+  | "type";
 
 const ApplicationContext = React.createContext<IApplicationProvider>({});
 
@@ -34,6 +43,11 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
   const [name, setName] = React.useState<string>("");
   const [username, setUsername] = React.useState<string>("");
   const [gloabalLoader, setGlobalLoader] = React.useState<boolean>(false);
+  const notify = (content: ToastContent, type?: TypeOptions) => {
+    toast(content, {
+      type: type,
+    });
+  };
 
   const {
     keycloak: { tokenParsed },
@@ -56,6 +70,7 @@ const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
     username,
     gloabalLoader,
     setGlobalLoader,
+    notify,
   };
 
   return (

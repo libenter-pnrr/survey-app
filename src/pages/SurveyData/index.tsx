@@ -38,7 +38,7 @@ const SurveyData = () => {
   }>();
   const navigate = useNavigate();
   const { keycloak } = useKeycloak();
-  const { gloabalLoader, setGlobalLoader } = useApplicationContext();
+  const { gloabalLoader, setGlobalLoader, notify } = useApplicationContext();
   const { isLoading, surveys } = useSurveys();
   const [selectedSurvey, setSelectedSurvey] = React.useState<string>("");
   const { isLoading: loadingSurvey, survey } = useGetSurvey(selectedSurvey);
@@ -56,10 +56,15 @@ const SurveyData = () => {
     setGlobalLoader(true);
     saveSurveyData(request)
       .then((reponse: SaveSurveyDataResponse) => {
+        notify("Dati questionario salvati correttamente", "success");
         navigate(`/survey-data/${reponse.id}/update`);
       })
       .catch((e) => {
         console.log(e);
+        notify(
+          "Errore durante il salvataggio dei dati del questionario",
+          "error"
+        );
       })
       .finally(() => {
         setGlobalLoader(false);

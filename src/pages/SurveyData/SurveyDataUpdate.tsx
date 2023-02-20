@@ -4,11 +4,8 @@ import { Card, Container } from "@mui/material";
 import { Box } from "@mui/system";
 import { Form } from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import { useApplicationContext } from "@contexts/ApplicationProvider";
 import FullScreenLoader from "@application/components/FullScreenLoader";
-import { useKeycloak } from "@react-keycloak/web";
 import { useGetSurveyData } from "@hooks/Survey/useGetSurveyData";
-import { updateSurveyData } from "@application/api/SurveyData";
 import ProjectInfo from "@application/components/Project/ProjectInfo";
 
 function transformErrors(errors) {

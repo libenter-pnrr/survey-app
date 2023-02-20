@@ -1,7 +1,10 @@
 import ISaveSurveyDataResponse, {
   SaveSurveyDataResponse,
 } from "@application/models/Project/IGetProjectInfoResponse";
-import { IUpdateSurveyPayload } from "@application/models/Survey/ICreateSurveyPayload";
+import {
+  IUpdateSurveyDataPayload,
+  IUpdateSurveyPayload,
+} from "@application/models/Survey/ICreateSurveyPayload";
 import ICreateSurveyDataRequest from "@application/models/SurveyData/ICreateSurveyDataRequest";
 import ISearchSurveyDataRequest from "@application/models/SurveyData/ISearchSurveyDataRequest";
 import ISearchSurveyDataResponse, {
@@ -77,7 +80,7 @@ export const updateSurveyData = async ({
   token,
   surveyId,
   data,
-}: IUpdateSurveyPayload): Promise<null> => {
+}: IUpdateSurveyDataPayload): Promise<null> => {
   return await http.patch(
     `/survey-data/${surveyId}`,
     {
