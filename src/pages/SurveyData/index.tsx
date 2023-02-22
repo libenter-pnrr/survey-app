@@ -22,6 +22,7 @@ import FullScreenLoader from "@application/components/FullScreenLoader";
 import { useKeycloak } from "@react-keycloak/web";
 import ProjectInfo from "@application/components/Project/ProjectInfo";
 import { SaveSurveyDataResponse } from "@application/models/Project/IGetProjectInfoResponse";
+import { makeStyles } from "@mui/styles";
 
 function transformErrors(errors) {
   return errors.map((error) => {
@@ -32,7 +33,14 @@ function transformErrors(errors) {
   });
 }
 
+const useStyles = makeStyles((theme) => ({
+  form: {
+    width: "100%",
+  },
+}));
+
 const SurveyData = () => {
+  const classes = useStyles();
   const { projectId } = useParams<{
     projectId: string;
   }>();
@@ -152,6 +160,7 @@ const SurveyData = () => {
               }}
             >
               <Form
+                className={classes.form}
                 validator={validator}
                 schema={survey.schema}
                 uiSchema={Object.assign(survey.uiSchema, {

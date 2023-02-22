@@ -109,3 +109,14 @@ export const getSurveyDataById = async ({
 
   return response.data as SurveyDataById;
 };
+
+export const deleteSurveyData = async ({
+  token,
+  id,
+}): Promise<null | Error> => {
+  return await http.delete(`/survey-data/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+};

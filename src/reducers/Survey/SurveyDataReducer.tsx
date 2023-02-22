@@ -6,6 +6,7 @@ import {
   SET_FILTER,
   SET_LOADING,
   SET_RESULTS,
+  SET_TO_DELETE,
 } from "./actions";
 
 export interface ISurveyDataFilter {
@@ -20,6 +21,11 @@ export interface ISurveyDataFilter {
 export interface ISurveyDataReducerState {
   openFilter: boolean;
   loading: boolean;
+  toDelete?: {
+    id: string;
+    title: string;
+    cup: string;
+  } | null;
   filter: ISurveyDataFilter;
   rows: SurveyData[];
   pageCount: number;
@@ -28,6 +34,7 @@ export interface ISurveyDataReducerState {
 export const surveyDataReducerInitialState: ISurveyDataReducerState = {
   openFilter: false,
   loading: false,
+  toDelete: null,
   filter: {
     customer: "",
     cup: "",
@@ -53,6 +60,10 @@ export const SurveyDataReducer = (
 
   if (action.type === SET_FILTER) {
     return { ...state, filter: action.payload };
+  }
+
+  if (action.type === SET_TO_DELETE) {
+    return { ...state, toDelete: action.payload };
   }
 
   if (action.type === RESET_FILTER) {

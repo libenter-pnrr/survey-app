@@ -1,20 +1,28 @@
 import React from "react";
-import { getSurveyData } from "@application/api/SurveyData";
+import { deleteSurveyData, getSurveyData } from "@application/api/SurveyData";
 import { ISearchSurveyData } from "@application/models/SurveyData/ISearchSurveyDataResponse";
 import { useKeycloak } from "@react-keycloak/web";
 import ControlledTable from "@application/components/Table/ControlledTable";
 import {
+  Box,
+  Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { Add, FilterList } from "@mui/icons-material";
+import { Add, FilterList, Warning } from "@mui/icons-material";
 import {
   OPEN_FILTER,
   SET_LOADING,
   SET_RESULTS,
+  SET_TO_DELETE,
 } from "@reducers/Survey/actions";
 import useSuveryDataContext from "@contexts/SurveyDataDashboardProvider";
 import FilterDrawer from "./FilterDrawer";
@@ -25,8 +33,9 @@ import { useApplicationContext } from "@contexts/ApplicationProvider";
 const SurveyDataDashboard = () => {
   const navigate = useNavigate();
   const { keycloak } = useKeycloak();
-  const { loading, rows, pageCount, filter, dispatch } = useSuveryDataContext();
-  const { username } = useApplicationContext();
+  const { loading, rows, pageCount, filter, dispatch, toDelete } =
+    useSuveryDataContext();
+  const { username, notify, setGlobalLoader } = useApplicationContext();
   // We'll start our table without any data
   const fetchIdRef = React.useRef(0);
 
@@ -36,29 +45,45 @@ const SurveyDataDashboard = () => {
         Header: " ",
         accessor: "id",
         Cell: ({ value, row }) => {
-          return (
-            <MenuIcon
-              options={[
-                {
-                  label:
-                    row.values.created_by === username
-                      ? "Modifica"
-                      : "Dettagli",
-                  onClick: () => {
-                    if (row.values.created_by === username) {
-                      navigate(`/survey-data/${value}/update`);
-                    } else {
-                      navigate(`/survey-data/${value}/details`);
-                    }
+          const isCoordinator =
+            keycloak.resourceAccess[keycloak.clientId].roles.includes(
+              "admin"
+            ) ||
+            keycloak.resourceAccess[keycloak.clientId].roles.includes(
+              "coordinator"
+            );
+
+          const options = [
+            {
+              label:
+                row.values.created_by === username ? "Modifica" : "Dettagli",
+              onClick: () => {
+                if (row.values.created_by === username) {
+                  navigate(`/survey-data/${value}/update`);
+                } else {
+                  navigate(`/survey-data/${value}/details`);
+                }
+              },
+            },
+            {
+              label: "Elimina",
+              onClick: () =>
+                dispatch({
+                  type: SET_TO_DELETE,
+                  payload: {
+                    id: value,
+                    title: row.values.survey_title,
+                    cup: row.values.cup_code,
                   },
-                },
-                {
-                  label: "Elimina",
-                  onClick: () => console.log("elimina"),
-                },
-              ]}
-            />
-          );
+                }),
+            },
+          ];
+
+          if (!isCoordinator) {
+            options.splice(1, 1);
+          }
+
+          return <MenuIcon options={options} />;
         },
       },
       {
@@ -139,8 +164,62 @@ const SurveyDataDashboard = () => {
     [filter]
   );
 
+  const handleCloseDelete = () => {
+    dispatch({ type: SET_TO_DELETE, payload: null });
+  };
+
+  const handleDelete = () => {
+    setGlobalLoader(true);
+    deleteSurveyData({
+      token: keycloak.token,
+      id: toDelete.id,
+    })
+      .then(() => {
+        dispatch({ type: SET_TO_DELETE, payload: null });
+        fetchData({ pageSize: 10, pageIndex: 0 });
+        notify("Questionario eliminato correttamente", "success");
+      })
+      .catch((err) => {
+        notify(err.message, "error");
+      })
+      .finally(() => {
+        setGlobalLoader(false);
+      });
+  };
+
   return (
     <React.Fragment>
+      <Dialog open={toDelete !== null} onClose={handleCloseDelete}>
+        <DialogTitle>Confermi l'operazione?</DialogTitle>
+        <DialogContent>
+          <Box
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Warning color="error" fontSize="large" />
+          </Box>
+          <DialogContentText>
+            Sei sicuro di voler eliminare il questionario{" "}
+            <strong>{toDelete?.title}</strong> dal Progetto{" "}
+            <strong>{toDelete?.cup}</strong>? L'operazione non è reversibile.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleCloseDelete} color="secondary">
+            Annulla
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleDelete}
+            autoFocus
+          >
+            Elimina
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <FilterDrawer />
       <Toolbar
         sx={{
@@ -153,13 +232,11 @@ const SurveyDataDashboard = () => {
         }}
       >
         <Typography variant="button">Questionari</Typography>
-        <div>
-          <Tooltip title="Filtri">
-            <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
-              <FilterList />
-            </IconButton>
-          </Tooltip>
-        </div>
+        <Tooltip title="Filtri">
+          <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
+            <FilterList />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
       <Container maxWidth={false} sx={{ py: 2 }}>
         <ControlledTable

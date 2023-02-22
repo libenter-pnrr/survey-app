@@ -12,10 +12,12 @@ import { onDragEnd } from "@common/utils/drag";
 import { createSurvey } from "@application/api/Survey";
 import { useKeycloak } from "@react-keycloak/web";
 import { useApplicationContext } from "@contexts/ApplicationProvider";
+import { useNavigate } from "react-router-dom";
 
 const CreateSurvey = () => {
   const { questions, display, dispatch, title, description } =
     useSurveyContext();
+  const navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const { setGlobalLoader, notify } = useApplicationContext();
 
@@ -24,7 +26,7 @@ const CreateSurvey = () => {
 
     try {
       setGlobalLoader(true);
-      await createSurvey({
+      const id = await createSurvey({
         token: keycloak.token,
         title,
         description,
@@ -32,6 +34,7 @@ const CreateSurvey = () => {
         uiSchema,
       });
       notify("Questionario creato correttamente", "success");
+      navigate(`/wizard/${id}/edit`);
     } catch (e) {
       console.log(e);
       notify(e?.response?.data?.message, "error");

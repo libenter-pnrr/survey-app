@@ -30,32 +30,40 @@ const SurveyDashboard = () => {
     { id: "", title: "" }
   );
   const { keycloak } = useKeycloak();
-
+  console.log(keycloak);
   const handleCloseDelete = () => {
     setToDelete({ id: "", title: "" });
   };
 
   const navigate = useNavigate();
-  const columns = React.useMemo(
-    () => [
+  const columns = React.useMemo(() => {
+    const isCoordinator =
+      keycloak.resourceAccess[keycloak.clientId].roles.includes("admin") ||
+      keycloak.resourceAccess[keycloak.clientId].roles.includes("coordinator");
+
+    return [
       {
         Header: "",
         accessor: "actions",
-        Cell: ({ row: { original } }) => (
-          <MenuIcon
-            options={[
-              {
-                label: "Configura",
-                onClick: () => navigate(`/wizard/${original.id}/edit`),
-              },
-              {
-                label: "Elimina",
-                onClick: () =>
-                  setToDelete({ id: original.id, title: original.title }),
-              },
-            ]}
-          />
-        ),
+        Cell: ({ row: { original } }) => {
+          const options = [
+            {
+              label: "Configura",
+              onClick: () => navigate(`/wizard/${original.id}/edit`),
+            },
+            {
+              label: "Elimina",
+              onClick: () =>
+                setToDelete({ id: original.id, title: original.title }),
+            },
+          ];
+
+          if (!isCoordinator) {
+            options.splice(1, 1);
+          }
+
+          return <MenuIcon options={options} />;
+        },
         width: 10,
         maxWidth: 50,
       },
@@ -74,9 +82,8 @@ const SurveyDashboard = () => {
         Header: "Descrizione",
         accessor: "description",
       },
-    ],
-    []
-  );
+    ];
+  }, []);
 
   const handleDelete = () => {
     deleteSurvey({
@@ -140,7 +147,7 @@ const SurveyDashboard = () => {
         </Typography>
         <Tooltip title="Aggiungi Questionario">
           <IconButton onClick={() => navigate("/wizard/create")}>
-            <Add sx={{ ml: 1 }} />
+            <Add />
           </IconButton>
         </Tooltip>
       </Toolbar>

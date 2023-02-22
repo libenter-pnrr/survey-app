@@ -8,13 +8,16 @@ import {
 import { Survey } from "@application/models/Survey/Survey";
 import { http } from "../http";
 
-const createSurvey = async (payload: ICreateSurveyPayload): Promise<null> => {
+const createSurvey = async (
+  payload: ICreateSurveyPayload
+): Promise<{ id: string }> => {
   const { token, ...rest } = payload;
-  return await http.post(`/survey`, rest, {
+  const { data } = await http.post(`/survey`, rest, {
     headers: {
       authorization: `Bearer ${token}`,
     },
   });
+  return data.id;
 };
 
 const updateSurvey = async (payload: IUpdateSurveyPayload): Promise<null> => {
