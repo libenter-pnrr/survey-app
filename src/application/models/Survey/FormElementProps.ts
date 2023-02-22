@@ -14,6 +14,7 @@ export type FormElementProps = {
     | "date"
     | "time"
     | "number"
+    | "url"
     | "email";
   required?: boolean;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {

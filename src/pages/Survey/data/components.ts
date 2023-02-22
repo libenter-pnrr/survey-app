@@ -1,9 +1,11 @@
 import { FormElementProps } from "@application/models/Survey/FormElementProps";
 import {
   AlternateEmail,
+  CalendarMonth,
   CheckBox,
   Filter9,
   FormatListBulleted,
+  Link,
   Notes,
   RadioButtonChecked,
   TextFields,
@@ -103,6 +105,29 @@ export const formElements: FormElementProps[] = [
           title: "three",
         },
       ],
+    },
+    uiSchema: {},
+  },
+  {
+    id: "7",
+    type: "url",
+    icon: Link,
+    schema: {
+      type: "string",
+      title: "URL",
+      format: "uri",
+      description: "Inserire un url valido (es. https://www.google.com)",
+    },
+    uiSchema: {},
+  },
+  {
+    id: "8",
+    type: "date",
+    icon: CalendarMonth,
+    schema: {
+      type: "string",
+      title: "Data",
+      format: "date",
     },
     uiSchema: {},
   },

@@ -1,10 +1,7 @@
 import ISaveSurveyDataResponse, {
   SaveSurveyDataResponse,
 } from "@application/models/Project/IGetProjectInfoResponse";
-import {
-  IUpdateSurveyDataPayload,
-  IUpdateSurveyPayload,
-} from "@application/models/Survey/ICreateSurveyPayload";
+import { IUpdateSurveyDataPayload } from "@application/models/Survey/ICreateSurveyPayload";
 import ICreateSurveyDataRequest from "@application/models/SurveyData/ICreateSurveyDataRequest";
 import ISearchSurveyDataRequest from "@application/models/SurveyData/ISearchSurveyDataRequest";
 import ISearchSurveyDataResponse, {
