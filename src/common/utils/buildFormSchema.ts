@@ -11,22 +11,23 @@ const buildFormSchema = (
   description: string,
   elements: FormElementProps[]
 ): FormSchemaResponse => {
-  const schema: RJSFSchema = {
+  const schema: RJSFSchema = new Object({
     type: "object",
     title,
     description,
-    required: elements
-      .filter((element) => element.required)
-      .map((element) => element.id),
+    required: [],
     properties: {},
-  };
+  }) as RJSFSchema;
 
-  const uiSchema: UiSchema = {};
+  const uiSchema: UiSchema = new Object({}) as UiSchema;
 
-  elements.forEach((element) => {
+  for (const element of elements) {
     schema.properties[element.id] = element.schema;
     uiSchema[element.id] = element.uiSchema;
-  });
+    if (element.required) {
+      schema.required.push(element.id);
+    }
+  }
 
   return { schema, uiSchema };
 };

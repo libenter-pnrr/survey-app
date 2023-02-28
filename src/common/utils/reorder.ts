@@ -1,4 +1,4 @@
-import { FormElementProps } from "../types";
+import { FormElementProps } from "@application/models/Survey/FormElementProps";
 
 // a little function to help us with reordering the result
 export default function reorder(

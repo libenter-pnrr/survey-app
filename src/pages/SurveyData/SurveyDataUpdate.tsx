@@ -7,6 +7,7 @@ import validator from "@rjsf/validator-ajv8";
 import FullScreenLoader from "@application/components/FullScreenLoader";
 import { useGetSurveyData } from "@hooks/Survey/useGetSurveyData";
 import ProjectInfo from "@application/components/Project/ProjectInfo";
+import { makeStyles } from "@mui/styles";
 
 function transformErrors(errors) {
   return errors.map((error) => {
@@ -17,10 +18,17 @@ function transformErrors(errors) {
   });
 }
 
+const useStyles = makeStyles((theme) => ({
+  form: {
+    width: "100%",
+  },
+}));
+
 const SurveyDataUpdate = ({ disabled = false }: { disabled?: boolean }) => {
   const { surveyId } = useParams<{
     surveyId: string;
   }>();
+  const classes = useStyles();
 
   const { isLoading, surveyData, saveSurveyData } = useGetSurveyData(surveyId);
 
@@ -48,6 +56,7 @@ const SurveyDataUpdate = ({ disabled = false }: { disabled?: boolean }) => {
             }}
           >
             <Form
+              className={classes.form}
               validator={validator}
               schema={surveyData.surveySchema}
               uiSchema={Object.assign(surveyData.surveyUiSchema, {

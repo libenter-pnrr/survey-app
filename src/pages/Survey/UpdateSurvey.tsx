@@ -25,13 +25,16 @@ import { useApplicationContext } from "@contexts/ApplicationProvider";
 const UpdateSurvey = () => {
   const { questions, display, dispatch, title, description } =
     useSurveyContext();
+  console.log("is update survey", questions);
   const { id } = useParams<{ id: string }>();
   const { isLoading, survey } = useGetSurvey(id);
   const { keycloak } = useKeycloak();
   const { setGlobalLoader, notify } = useApplicationContext();
+  //const [localQuestions, setLocalQuestions] = React.useState([]);
 
   React.useEffect(() => {
     if (!isLoading && survey) {
+      //console.log("survey setto");
       dispatch({
         type: SET_TITLE,
         payload: survey.title,
@@ -47,8 +50,14 @@ const UpdateSurvey = () => {
     }
   }, [isLoading, survey]);
 
+  /*  React.useEffect(() => {
+    console.log("local questions", questions);
+    setLocalQuestions(questions);
+  }, [questions]);
+*/
   const handleUpdateSurvey = async () => {
     const { schema, uiSchema } = buildFormSchema(title, description, questions);
+
     try {
       setGlobalLoader(true);
       await updateSurvey({

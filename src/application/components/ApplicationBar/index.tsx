@@ -21,7 +21,7 @@ import { getMenu } from "@common/Menu";
 import { useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 // @ts-ignore-next-line
-import Logo from "@assets/img/libenter.png";
+import Logo from "@assets/img/logo.png";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const ApplicationBar = () => {

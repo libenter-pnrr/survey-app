@@ -4,19 +4,19 @@ import { formElements } from "@pages/Survey/data/components";
 
 const buildQuestion = (survey: IGetSurveyResponse): FormElementProps[] => {
   const questions: FormElementProps[] = [];
-  for (const id in survey.schema.properties) {
+  for (const id of Object.keys(survey.schema.properties)) {
     const question = survey.schema.properties[id];
     const questionProps = formElements.find(
       (element) => element.type === id.split("__")[1]
     );
+
     const obj = Object.assign({
       ...questionProps,
       id,
       schema: question,
-      required: survey?.schema?.required?.includes(id),
+      required: survey?.schema?.required?.includes(id) || false,
       uiSchema: survey?.uiSchema?.[id] || {},
     });
-
     questions.push(obj);
   }
   return questions;
