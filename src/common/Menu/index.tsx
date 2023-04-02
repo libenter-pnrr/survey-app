@@ -14,8 +14,8 @@ export const getMenu = (roles: string[]) => {
 
   if (roles.includes("survey")) {
     menu.push({
-      title: "Questionari",
-      subtitle: "Gestisci crea/modifica questionari",
+      title: "Report di monitoraggio",
+      subtitle: "Gestisci crea/modifica report",
       icon: <CheckBox />,
       path: "/survey",
     });
@@ -23,8 +23,8 @@ export const getMenu = (roles: string[]) => {
 
   if (roles.includes("project")) {
     menu.push({
-      title: "Progetti",
-      subtitle: "Gestisci crea/modifica progetti",
+      title: "Cerca il progetto",
+      subtitle: "Ricerca i tuoi progetti",
       icon: <AccountTree />,
       path: "/projects",
     });

@@ -51,7 +51,7 @@ const Project = () => {
                 },
               },
               {
-                label: "Aggiungi questionario",
+                label: "Aggiungi report di monitoraggio",
                 onClick: () => navigate(`/survey/${value}`),
               },
             ]}
@@ -152,18 +152,18 @@ const Project = () => {
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Typography variant="button">Progetti</Typography>
+        <Typography variant="button">Cerca il progetto</Typography>
         <div>
           <Tooltip title="Filtri">
             <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
               <FilterList />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Aggiungi Questionario">
+          {/* <Tooltip title="Aggiungi Progetto">
             <IconButton onClick={() => {}}>
               <Add />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </div>
       </Toolbar>
       <Container maxWidth={false} sx={{ py: 2 }}>

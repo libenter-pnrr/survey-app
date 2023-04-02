@@ -231,7 +231,7 @@ const SurveyDataDashboard = () => {
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Typography variant="button">Questionari</Typography>
+        <Typography variant="button">Report di monitoraggio</Typography>
         <Tooltip title="Filtri">
           <IconButton onClick={() => dispatch({ type: OPEN_FILTER })}>
             <FilterList />
